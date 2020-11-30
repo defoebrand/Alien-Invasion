@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "webpack": "^5.5.1",
+    "webpack-cli": "^ 3.3.12",
     "css-loader": "^5.0.1",
     "html-webpack-plugin": "^4.5.0",
     "sass": "^1.29.0",
