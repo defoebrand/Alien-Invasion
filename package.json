@@ -1,11 +1,11 @@
 {
   "name": "Invasion",
   "version": "1.0.0",
-  "description": "",
+  "description": "Alien Invasion shooter game.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
+    "start": "webpack",
     "watch": "webpack --watch",
     "server": "webpack-dev-server --config webpack.config.js"
   },
