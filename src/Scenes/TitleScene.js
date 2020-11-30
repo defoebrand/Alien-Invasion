@@ -1,4 +1,4 @@
-// import 'phaser';
+import 'phaser';
 import Button from '../Objects/Button'
 
 export default class TitleScene extends Phaser.Scene {

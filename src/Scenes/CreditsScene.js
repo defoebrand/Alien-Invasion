@@ -1,5 +1,4 @@
-// import 'phaser'
-
+import 'phaser'
 import GameText from '../Objects/Text'
 
 export default class CreditsScene extends Phaser.Scene {
@@ -17,38 +16,32 @@ export default class CreditsScene extends Phaser.Scene {
 
     this.madeByText.setY(325);
 
-    this.plugText.setY(375);
+    this.plugText.setY(325);
 
     this.creditsTween = this.tweens.add({
       targets: this.creditsText,
       y: -100,
       ease: 'Power1',
       duration: 2500,
-      delay: 1000,
-      onComplete: function() {
-        this.creditsTween.destroy;
-      }
+      delay: 1000
     });
 
     this.madeByTween = this.tweens.add({
       targets: this.madeByText,
-      y: -100,
+      y: 0,
       ease: 'Power1',
-      duration: 5000,
-      delay: 1000,
-      onComplete: function() {
-        this.madeByTween.destroy;
-      }.bind(this)
+      duration: 3750,
+      delay: 1000
     });
 
     this.plugTween = this.tweens.add({
       targets: this.plugText,
-      y: -175,
+      y: 100,
       ease: 'Power1',
       duration: 7500,
-      delay: 1500,
+      delay: 3750,
       onComplete: function() {
-        this.plugTween.destroy;
+        this.destroy;
         this.scene.start('Title');
       }.bind(this)
     });
