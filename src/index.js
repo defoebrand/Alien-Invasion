@@ -3,6 +3,7 @@ import 'phaser';
 import config from './Conf/config';
 import BootScene from './Scenes/BootScene';
 import PreloaderScene from './Scenes/PreloaderScene';
+import TitleScene from './Scenes/TitleScene';
 
 const body = document.querySelector('body')
 
@@ -30,6 +31,7 @@ class Game extends Phaser.Game {
     super(config);
     this.scene.add('Boot', BootScene);
     this.scene.add('Preloader', PreloaderScene);
+    this.scene.add('Title', TitleScene);
 
     this.scene.start('Boot');
   }

@@ -11,10 +11,9 @@ module.exports = {
   },
   plugins: [new HtmlWebpackPlugin()],
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.s?[ac]ss$/i,
-        use: ["style-loader", "css-loader", "sass-loader",],
+        use: ["style-loader", "css-loader", "sass-loader", ],
       },
       {
         test: /\.(gif|png|jpe?g|svg|xml)$/i,
@@ -22,4 +21,7 @@ module.exports = {
       }
     ],
   },
+  performance: {
+    hints: false
+  }
 };

@@ -1,5 +1,6 @@
 import 'phaser';
 import SelectArrow from '/src/Assets/buttonArrow.png'
+import SelectEmpty from '/src/Assets/buttonEmpty.png'
 
 export default class PreloaderScene extends Phaser.Scene {
   constructor() {
@@ -70,7 +71,7 @@ export default class PreloaderScene extends Phaser.Scene {
     this.timedEvent = this.time.delayedCall(500, this.ready, [], this);
 
     this.load.image('buttonArrow', SelectArrow);
-
+    this.load.image('buttonEmpty', SelectEmpty);
 
   }
 
@@ -81,7 +82,7 @@ export default class PreloaderScene extends Phaser.Scene {
   ready() {
     this.readyCount++;
     if (this.readyCount === 2) {
-      alert('Good Job!');
+      this.scene.start('Title');
     }
   }
 
