@@ -1,4 +1,5 @@
 import 'phaser';
+import Background from '/src/Assets/loadingScreen.png';
 
 export default class BootScene extends Phaser.Scene {
   constructor() {
@@ -6,7 +7,7 @@ export default class BootScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('logo', './src/Assets/loadingScreen.png');
+    this.load.image('logo', Background);
 
   }
 

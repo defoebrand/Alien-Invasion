@@ -23,13 +23,14 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "webpack": "^5.5.1",
-    "webpack-cli": "^ 3.3.12",
     "css-loader": "^5.0.1",
+    "file-loader": "^6.2.0",
     "html-webpack-plugin": "^4.5.0",
+    "phaser": "^3.24.1",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0",
     "style-loader": "^2.0.0",
-    "phaser": "^3.24.1"
+    "webpack": "^5.5.1",
+    "webpack-cli": "^ 3.3.12"
   }
 }
