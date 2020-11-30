@@ -2,6 +2,7 @@ import './style.scss';
 import 'phaser';
 import config from './Conf/config';
 import BootScene from './Scenes/BootScene';
+import PreloaderScene from './Scenes/PreloaderScene';
 
 const body = document.querySelector('body')
 
@@ -28,6 +29,7 @@ class Game extends Phaser.Game {
   constructor() {
     super(config);
     this.scene.add('Boot', BootScene);
+    this.scene.add('Preloader', PreloaderScene);
 
     this.scene.start('Boot');
   }
