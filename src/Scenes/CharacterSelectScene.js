@@ -8,7 +8,7 @@ export default class CharacterSelectScene extends Phaser.Scene {
 
   create() {
     this.model = this.sys.game.globals.model;
-    this.model.charSelect = 'soldier';
+    this.model.charSelect = 'citizen';
     // this.buttons = this.physics.add.staticGroup();
 
     this.citizenSelect = new CharButton(this, 800 / 2, 600 / 2 - 200, 'buttonEmpty', 'citizenChar', 'Citizen', 'Game', this.model.charSelect);
