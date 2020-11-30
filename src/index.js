@@ -1,6 +1,7 @@
 import './style.scss';
 import 'phaser';
 import config from './Conf/config';
+import Model from './Conf/Model'
 import BootScene from './Scenes/BootScene';
 import PreloaderScene from './Scenes/PreloaderScene';
 import TitleScene from './Scenes/TitleScene';
@@ -30,6 +31,11 @@ body.appendChild(form)
 class Game extends Phaser.Game {
   constructor() {
     super(config);
+    const model = new Model();
+    this.globals = {
+      model,
+      bgMusic: null
+    };
     this.scene.add('Boot', BootScene);
     this.scene.add('Preloader', PreloaderScene);
     this.scene.add('Title', TitleScene);

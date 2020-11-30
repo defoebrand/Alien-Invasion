@@ -6,6 +6,8 @@ import BoxChecked from '/src/Assets/boxUnchecked.png'
 import Citizen from '/src/Assets/charCitizen.png'
 import Soldier from '/src/Assets/charSoldier.png'
 import Alien from '/src/Assets/charAlien.png'
+import SoundTrack from '/src/Assets/Dafunk[WeBelieveInGoa]Remix.m4a'
+
 
 export default class PreloaderScene extends Phaser.Scene {
   constructor() {
@@ -82,6 +84,7 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('citizenChar', Citizen);
     this.load.image('soldierChar', Soldier);
     this.load.image('alienChar', Alien);
+    this.load.audio('bgMusic', SoundTrack);
 
   }
 
