@@ -1,5 +1,4 @@
-import 'phaser'
-import GameText from '../Objects/Text'
+import GameText from '../Objects/GameText'
 
 export default class CreditsScene extends Phaser.Scene {
   constructor() {
