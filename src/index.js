@@ -1,4 +1,7 @@
 import './style.scss';
+import 'phaser';
+import config from './Conf/config';
+import BootScene from './Scenes/BootScene';
 
 const body = document.querySelector('body')
 
@@ -19,3 +22,15 @@ submitBtn.onclick = (e) => {
 form.appendChild(submitBtn)
 
 body.appendChild(form)
+
+
+class Game extends Phaser.Game {
+  constructor() {
+    super(config);
+    this.scene.add('Boot', BootScene);
+
+    this.scene.start('Boot');
+  }
+}
+
+window.game = new Game();
