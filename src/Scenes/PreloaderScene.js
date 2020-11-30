@@ -69,7 +69,7 @@ export default class PreloaderScene extends Phaser.Scene {
 
     this.timedEvent = this.time.delayedCall(500, this.ready, [], this);
 
-    this.load.image('buttonArrow', 'src/assets/buttonArrow.png');
+    this.load.image('buttonArrow', SelectArrow);
 
 
   }
@@ -84,5 +84,7 @@ export default class PreloaderScene extends Phaser.Scene {
       alert('Good Job!');
     }
   }
+
+
 
 };
