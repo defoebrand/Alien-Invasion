@@ -1,6 +1,11 @@
 import 'phaser';
 import SelectArrow from '/src/Assets/buttonArrow.png'
 import SelectEmpty from '/src/Assets/buttonEmpty.png'
+import BoxUnchecked from '/src/Assets/boxChecked.png'
+import BoxChecked from '/src/Assets/boxUnchecked.png'
+import Citizen from '/src/Assets/charCitizen.png'
+import Soldier from '/src/Assets/charSoldier.png'
+import Alien from '/src/Assets/charAlien.png'
 
 export default class PreloaderScene extends Phaser.Scene {
   constructor() {
@@ -72,6 +77,11 @@ export default class PreloaderScene extends Phaser.Scene {
 
     this.load.image('buttonArrow', SelectArrow);
     this.load.image('buttonEmpty', SelectEmpty);
+    this.load.image('buttonEmpty', SelectEmpty);
+    this.load.image('buttonEmpty', SelectEmpty);
+    this.load.image('citizenChar', Citizen);
+    this.load.image('soldierChar', Soldier);
+    this.load.image('alienChar', Alien);
 
   }
 
