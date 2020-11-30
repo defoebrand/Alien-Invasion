@@ -6,7 +6,7 @@ export class Character extends Phaser.GameObjects.Sprite {
     this.y = y;
     this.scene.add.existing(this);
     this.scene.physics.world.enableBody(this, 0);
-    this.body.setBounce(0.2);
+    this.body.setBounce(0.1);
     this.body.setCollideWorldBounds(true);
   }
 }

@@ -1,13 +1,13 @@
 export default class GameText extends Phaser.GameObjects.Container {
-  constructor(scene, x, y, text, zone) {
+  constructor(scene, x, y, text, zone, size, color) {
     super(scene);
     this.scene = scene;
     this.x = x;
     this.y = y;
 
     this.text = this.scene.add.text(x, y, text, {
-      fontSize: '32px',
-      fill: '#fff'
+      fontSize: size,
+      fill: color
     });
 
 

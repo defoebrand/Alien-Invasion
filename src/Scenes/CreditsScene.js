@@ -7,11 +7,11 @@ export default class CreditsScene extends Phaser.Scene {
   create() {
     this.zone = this.add.zone(800 / 2, 600 / 2);
 
-    this.creditsText = new GameText(this, 0, 0, 'Credits', this.zone)
+    this.creditsText = new GameText(this, 0, 0, 'Credits', this.zone, '32px', '#fff')
 
-    this.madeByText = new GameText(this, 0, 0, 'Created By: Brandon', this.zone)
+    this.madeByText = new GameText(this, 0, 0, 'Created By: Brandon', this.zone, '32px', '#fff')
 
-    this.plugText = new GameText(this, 0, 0, 'www.defoebrand.com', this.zone)
+    this.plugText = new GameText(this, 0, 0, 'www.defoebrand.com', this.zone, '32px', '#fff')
 
     this.madeByText.setY(325);
 

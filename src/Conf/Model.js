@@ -3,7 +3,6 @@ export default class Model {
     this._soundOn = true;
     this._musicOn = true;
     this._bgMusicPlaying = false;
-    this._charSelect = 'soldier';
   }
 
 
@@ -30,13 +29,4 @@ export default class Model {
   get bgMusicPlaying() {
     return this._bgMusicPlaying;
   }
-
-  set charSelect(value) {
-    this.charSelect = value;
-  }
-
-  get charSelect() {
-    return this._charSelect;
-  }
-
 }

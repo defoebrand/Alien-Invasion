@@ -11,7 +11,7 @@ export default class OptionsScene extends Phaser.Scene {
     this.zone = this.add.zone(800 / 2, 600 / 2);
 
 
-    this.optionsTitle = new GameText(this, 0, -125, 'Options', this.zone)
+    this.optionsTitle = new GameText(this, 0, -125, 'Options', this.zone, '32px', '#fff')
 
     this.musicButton = this.add.image(300, 250, 'boxChecked');
 
