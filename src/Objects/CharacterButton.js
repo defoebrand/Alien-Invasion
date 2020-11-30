@@ -9,6 +9,7 @@ export default class CharButton extends Phaser.GameObjects.Container {
     this.x = x;
     this.y = y;
 
+    // this.model = this.sys.game.globals.model;
 
     this.button = this.scene.add.sprite(0, 0, key1).setInteractive();
     this.text = this.scene.add.text(0, 0, text, {
@@ -21,8 +22,7 @@ export default class CharButton extends Phaser.GameObjects.Container {
     this.add(this.text);
 
     this.button.on('pointerdown', function() {
-      charSelect = lowerFirst(text);
-      console.log(charSelect)
+      // this.model.charSelect = lowerFirst(text);
       this.scene.scene.start(targetScene);
     }.bind(this));
 
@@ -33,6 +33,7 @@ export default class CharButton extends Phaser.GameObjects.Container {
     this.button.on('pointerout', function() {
       this.button.setTexture(key1);
     }.bind(this));
+
 
     this.scene.add.existing(this);
   }
