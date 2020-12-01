@@ -1,16 +1,12 @@
 import GameText from '../Objects/GameText'
-import {
-  Character
-} from '../Objects/Characters'
-import {
-  Artillery
-} from '../Objects/Artillery'
+import Character from '../Objects/Characters'
+import Artillery from '../Objects/Artillery'
 import {
   chasePlayer,
   destroyEnemy,
   explode,
   gameReset,
-  gameOver,
+  killPlayer,
   kill
 } from '../Helpers/gameLogic'
 
@@ -156,7 +152,7 @@ export default class GamePlayScene extends Phaser.Scene {
     this.bombs = this.physics.add.group();
     this.physics.add.collider(this.bombs, this.platforms);
     this.physics.add.collider(this.bombs, this.ground);
-    this.physics.add.overlap(this.bombs, this.player, destroyEnemy, null, this);
+    this.physics.add.overlap(this.bombs, this.player, killPlayer, null, this);
 
     this.bullets = this.physics.add.group({
       allowGravity: false
@@ -177,15 +173,16 @@ export default class GamePlayScene extends Phaser.Scene {
     this.shootTimer = 0;
     this.round = 0;
     this.score = 0;
-    this.countdown = 50;
+    this.countdown = 500;
     this.lastDirection = 'right'
+    this.playerDead = false;
   }
 
   update() {
     if (this.enemies.countActive(true) === 0) {
       this.round += 1
       this.score += 10;
-      this.countdown = 1500;
+      this.countdown += 1000;
 
       this.scoreText.text.setText('Score: ' + this.score);
 
@@ -194,22 +191,30 @@ export default class GamePlayScene extends Phaser.Scene {
           child.disableBody(true, true);
         });
         for (let i = 0; i < Phaser.Math.Between(1, 3); i++) {
-          this.platforms.create(Phaser.Math.Between(0, 800), Phaser.Math.Between(200, 400), 'platform');
+          this.platforms.create(Phaser.Math.Between(0, 800), Phaser.Math.Between(75, 450), 'platform');
         }
       }
 
-      // for (let i = 0; i < this.round; i++) {
-      this.enemy = new Character(this, Phaser.Math.Between(25, 775), Phaser.Math.Between(50, 475), this.enemyImage)
-      this.enemies.add(this.enemy)
-      // }
+      // // for (let i = 0; i < Math.ceil(this.round / 3); i++) {
+      this.newEnemy = new Character(this, 400, 300, this.enemyImage)
+      this.enemies.add(this.newEnemy)
+      // // }
 
       this.positionX = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
-      this.bomb = new Artillery(this, this.positionX, 16, 'bomb')
-      this.bombs.add(this.bomb)
-      this.bomb.body.setVelocity(Phaser.Math.Between(-200, 200), 20);
-      this.bomb.body.setBounce(1);
-      this.bomb.body.setCollideWorldBounds(true);
+      if (this.round % 5 === 0) {
+        this.bomb = new Artillery(this, this.positionX, 16, 'bomb')
+        this.bombs.add(this.bomb)
+        this.bomb.body.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        this.bomb.body.setBounce(1);
+        this.bomb.body.setCollideWorldBounds(true);
+      }
+
+    } else if (this.playerDead === true) {
+      this.physics.pause();
+      this.player.destroy();
+      this.model.score = this.score;
+      this.time.delayedCall(50, gameReset, [], this);
 
     } else {
       this.shootTimer++;
@@ -218,11 +223,15 @@ export default class GamePlayScene extends Phaser.Scene {
 
       if (this.countdown === 0) {
         this.gameOverTextShadowR = new GameText(this, 1, 600 / 2 - 225, 'Out of Time!', this.zone, '28px', '#000')
-        this.physics.pause();
-        this.time.delayedCall(500, gameReset, [], this);
-
-        // this.player.active = false;
+        this.playerDead = true;
       }
+
+      // if (this.shootTimer % 250 === 0) {
+      //   for (let i = 0; i < Math.floor(this.round / 2); i++) {
+      //     this.enemy = new Character(this, 0, 0, this.enemyImage)
+      //     this.enemies.add(this.enemy)
+      //   }
+      // }
 
       if (this.cursors.left.isDown) {
         this.player.body.setVelocityX(-160);
@@ -248,7 +257,7 @@ export default class GamePlayScene extends Phaser.Scene {
       }
       if (this.cursors.space.isDown) {
         if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
-          this.bullet = new Artillery(this, this.player.x, this.player.y - this.enemyGunHeight, `${this.model.charSelect}Bullet`)
+          this.bullet = new Artillery(this, this.player.x, this.player.y - this.model.gunHeight, `${this.model.charSelect}Bullet`)
           this.bullets.add(this.bullet)
           this.time.delayedCall(2250, explode, [this.bullet, ''], this);
           if (this.lastDirection === 'left') {

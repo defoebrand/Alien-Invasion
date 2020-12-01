@@ -1,5 +1,9 @@
+import {
+  lowerFirst
+} from '/src/Helpers/stringMan.js'
+
 export default class Button extends Phaser.GameObjects.Container {
-  constructor(scene, x, y, key1, key2, text, targetScene) {
+  constructor(scene, x, y, key1, key2, text, targetScene, character) {
     super(scene);
     this.scene = scene;
     this.x = x;
@@ -16,6 +20,9 @@ export default class Button extends Phaser.GameObjects.Container {
     this.add(this.text);
 
     this.button.on('pointerdown', function() {
+      if (character) {
+        character.charSelect = lowerFirst(text);
+      }
       this.scene.scene.start(targetScene);
     }.bind(this));
 

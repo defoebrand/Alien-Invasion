@@ -8,6 +8,8 @@ export default class GameOverScene extends Phaser.Scene {
     super('GameOver');
   }
   create() {
+    this.model = this.sys.game.globals.model;
+
     this.zone = this.add.zone(800 / 2, 0);
 
     this.gameOverTextShadowL1 = new GameText(this, -1, (600 / 2) - 151, 'Game Over', this.zone, '50px', '#000')
@@ -23,26 +25,24 @@ export default class GameOverScene extends Phaser.Scene {
     this.time.delayedCall(2250, kill, [this.gameOverTextShadowL2, ''], this);
     this.time.delayedCall(2250, kill, [this.gameOverTextShadowR2, ''], this);
 
-    //   // this.scoreText = new GameText(this, -300, 25, 'Score: 0', this.zone, '32px', '#000')
-    //
-
     this.thanksText = new GameText(this, 0, 560, 'Thanks for Playing!', this.zone, '26px', '#fff')
+    this.finalScoreText = new GameText(this, 0, 500, `${localStorage['name']}: ${this.model.score} pts`, this.zone, '26px', '#fff')
 
-    this.scoreText = new GameText(this, 0, 500, `${localStorage['name']}: ${localStorage['previousScore']} pts`, this.zone, '26px', '#fff')
-
-    this.scoreText.setY(650);
+    this.finalScoreText.setY(500);
 
 
-    this.scoreTween = this.tweens.add({
-      targets: this.scoreText,
+    this.finalScoreTween = this.tweens.add({
+      targets: this.finalScoreText,
       y: 160,
       ease: 'Power1',
       duration: 3000,
       delay: 1000,
       onComplete: function() {
-        this.scoreTween.destroy;
+        console.log(this)
+        this.finalScoreTween.destroy;
         this.scene.start('LeaderBoard');
       }.bind(this)
     });
+
   }
 }

@@ -5,7 +5,6 @@ export default class TitleScene extends Phaser.Scene {
     super('Title');
   }
 
-
   create() {
     this.model = this.sys.game.globals.model;
 

@@ -36,7 +36,7 @@ body.appendChild(form)
 class Game extends Phaser.Game {
   constructor() {
     super(config);
-    const model = new Model();
+    window.model = new Model();
     this.globals = {
       model,
       bgMusic: null

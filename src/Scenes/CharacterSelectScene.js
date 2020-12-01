@@ -1,24 +1,18 @@
-import CharButton from '../Objects/CharacterButton'
+import Button from '../Objects/Button'
 
 export default class CharacterSelectScene extends Phaser.Scene {
   constructor() {
     super('CharacterSelect');
   }
-  preload() {}
 
   create() {
     this.model = this.sys.game.globals.model;
-    this.model.charSelect = 'citizen';
-    // this.buttons = this.physics.add.staticGroup();
 
-    this.citizenSelect = new CharButton(this, 800 / 2, 600 / 2 - 200, 'buttonEmpty', 'citizenChar', 'Citizen', 'Game', this.model.charSelect);
-    // this.buttons.add(this.citizenSelect)
+    this.citizenSelect = new Button(this, 800 / 2, 600 / 2 - 200, 'buttonEmpty', 'selectCitizen', 'Citizen', 'Game', this.model);
 
-    this.soldierSelect = new CharButton(this, 800 / 2, 600 / 2, 'buttonEmpty', 'soldierChar', 'Soldier', 'Game', this.model.charSelect);
-    // this.buttons.add(this.soldierSelect)
+    this.soldierSelect = new Button(this, 800 / 2, 600 / 2, 'buttonEmpty', 'selectSoldier', 'Soldier', 'Game', this.model);
 
-    this.alienSelect = new CharButton(this, 800 / 2, 600 / 2 + 200, 'buttonEmpty', 'alienChar', 'Alien', 'Game', this.model.charSelect);
-    // this.buttons.add(this.alienSelect)
+    this.alienSelect = new Button(this, 800 / 2, 600 / 2 + 200, 'buttonEmpty', 'selectAlien', 'Alien', 'Game', this.model);
   }
 
 }

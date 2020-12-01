@@ -1,12 +1,15 @@
-import 'phaser';
+import GameText from '/src/Objects/GameText.js'
+import SoundTrack from '/src/Assets/Dafunk[WeBelieveInGoa]Remix.m4a'
 import SelectArrow from '/src/Assets/buttonArrow.png'
 import SelectEmpty from '/src/Assets/buttonEmpty.png'
 import BoxChecked from '/src/Assets/boxChecked.png'
 import BoxUnchecked from '/src/Assets/boxUnchecked.png'
+import Alien from '/src/Assets/charAlien.png'
 import Citizen from '/src/Assets/charCitizen.png'
 import Soldier from '/src/Assets/charSoldier.png'
-import Alien from '/src/Assets/charAlien.png'
-import SoundTrack from '/src/Assets/Dafunk[WeBelieveInGoa]Remix.m4a'
+import SelectAlien from '/src/Assets/selectAlien.png'
+import SelectCitizen from '/src/Assets/selectCitizen.png'
+import SelectSoldier from '/src/Assets/selectSoldier.png'
 import SoldierBullet from '/src/Assets/soldierBullet.png'
 import SoldierBulletExplosion from '/src/Assets/soldierBulletExplosion.png'
 import SoldierCharLeft from '/src/Assets/soldierCharLeft.png'
@@ -38,69 +41,50 @@ export default class PreloaderScene extends Phaser.Scene {
   constructor() {
     super('Preloader');
   }
+
+  init() {
+    this.readyCount = 0;
+  }
+
   preload() {
     this.add.image(400, 300, 'logo');
 
-    let progressBar = this.add.graphics();
-    let progressBox = this.add.graphics();
-    progressBox.fillStyle(0x222222, 0.8);
-    progressBox.fillRect(240, 270, 320, 50);
+    this.progressBar = this.add.graphics();
+    this.progressBox = this.add.graphics();
+    this.progressBox.fillStyle(0x222222, 0.8);
+    this.progressBox.fillRect(240, 270, 320, 50);
 
-    let width = this.cameras.main.width;
-    let height = this.cameras.main.height;
-    let loadingText = this.make.text({
-      x: width / 2,
-      y: height / 2 - 65,
-      text: 'Loading...',
-      style: {
-        font: '22px monospace',
-        fill: '#ffffff'
-      }
-    });
-    loadingText.setOrigin(0.5, 0.5)
+    this.width = this.cameras.main.width;
+    this.height = this.cameras.main.height;
 
-    let percentText = this.make.text({
-      x: width / 2,
-      y: height / 2 - 5,
-      text: '0%',
-      style: {
-        font: '18px monospace',
-        fill: '#ffffff'
-      }
-    });
-    percentText.setOrigin(0.5, 0.5);
+    this.zone = this.add.zone(this.width / 2, this.height / 2);
 
-    let assetText = this.make.text({
-      x: width / 2,
-      y: height / 2 + 50,
-      text: '',
-      style: {
-        font: '18px monospace',
-        file: '#ffffff'
-      }
-    });
-    assetText.setOrigin(0.5, 0.5);
+    this.loadingText = new GameText(this, 0, -65, 'Loading...', this.zone, '22px', '#fff')
+
+    this.percentText = new GameText(this, 0, -5, '0%', this.zone, '18px', '#fff')
+
+    this.assetText = new GameText(this, -125, 50, '', this.zone, '18px', '#fff')
+
 
     this.load.on('progress', function(value) {
-      percentText.setText(parseInt(value * 100) + '%');
-      progressBar.clear();
-      progressBar.fillStyle(0xffffff, 1);
-      progressBar.fillRect(250, 280, 300 * value, 30);
+      this.scene.percentText.text.setText(parseInt(value * 100) + '%');
+      this.scene.progressBar.clear();
+      this.scene.progressBar.fillStyle(0xffffff, 1);
+      this.scene.progressBar.fillRect(250, 280, 300 * value, 30);
     });
 
     this.load.on('fileprogress', function(file) {
-      assetText.setText('Loading asset: ' + file.key);
+      this.scene.assetText.text.setText('Loading asset: ' + file.key);
     });
     this.load.on('complete', function() {
-      progressBar.destroy();
-      progressBox.destroy();
-      loadingText.destroy();
-      percentText.destroy();
-      assetText.destroy();
+      this.progressBar.destroy();
+      this.progressBox.destroy();
+      this.loadingText.destroy();
+      this.percentText.destroy();
+      this.assetText.destroy();
       this.ready();
+      this.time.delayedCall(750, this.ready, [], this);
     }.bind(this));
-
-    this.timedEvent = this.time.delayedCall(500, this.ready, [], this);
 
     this.load.image('buttonArrow', SelectArrow);
     this.load.image('buttonEmpty', SelectEmpty);
@@ -109,6 +93,9 @@ export default class PreloaderScene extends Phaser.Scene {
     this.load.image('citizenChar', Citizen);
     this.load.image('soldierChar', Soldier);
     this.load.image('alienChar', Alien);
+    this.load.image('selectAlien', SelectAlien);
+    this.load.image('selectCitizen', SelectCitizen);
+    this.load.image('selectSoldier', SelectSoldier);
     this.load.audio('bgMusic', SoundTrack);
     this.load.image('sky', Sky);
     this.load.image('ground', Ground);
@@ -146,8 +133,6 @@ export default class PreloaderScene extends Phaser.Scene {
       frameWidth: 32,
       frameHeight: 50
     });
-
-
     this.load.spritesheet('alienBullet', AlienBullet, {
       frameWidth: 10,
       frameHeight: 15
@@ -212,10 +197,7 @@ export default class PreloaderScene extends Phaser.Scene {
       frameWidth: 33,
       frameHeight: 50
     });
-  }
 
-  init() {
-    this.readyCount = 0;
   }
 
   ready() {

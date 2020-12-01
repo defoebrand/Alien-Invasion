@@ -1,6 +1,4 @@
-import {
-  Artillery
-} from '../Objects/Artillery'
+import Artillery from '../Objects/Artillery'
 
 export const chasePlayer = (enemy) => {
   let thisScene = window.game.scene.scenes[7];
@@ -21,7 +19,7 @@ export const chasePlayer = (enemy) => {
 
   if (thisScene.shootTimer % 75 === 0) {
     thisScene.enemyBullet = new Artillery(thisScene, enemy.x, enemy.y - thisScene.enemyGunHeight, `${thisScene.enemySelect}Bullet`)
-    thisScene.physics.add.collider(thisScene.enemyBullet, thisScene.player, destroyEnemy, null, thisScene)
+    thisScene.physics.add.collider(thisScene.enemyBullet, thisScene.player, killPlayer, null, thisScene)
     if (enemy.direction === 'left') {
       thisScene.enemyBullet.body.setVelocity(-300, 0);
     } else {
@@ -32,7 +30,7 @@ export const chasePlayer = (enemy) => {
 }
 
 export const gameReset = () => {
-  // localStorage.setItem('previousScore', score);
+  // console.log(window.game.scene.scenes)
   window.game.scene.start('GameOver');
 
 }
@@ -51,9 +49,19 @@ export const destroyEnemy = (bullet, object) => {
   window.game.scene.scenes[7].time.delayedCall(250, kill, [bullet, thisScene.explosion], this);
 }
 
-export const kill = (bullet, object) => {
-  bullet.destroy();
-  if (object) {
-    object.destroy();
+export const killPlayer = (bullet, object) => {
+  let thisScene = window.game.scene.scenes[7];
+  thisScene.explosion = thisScene.add.sprite(object.x, object.y, `${thisScene.model.charSelect}Bullet`)
+  thisScene.explosion.anims.play('playerExplosion')
+  object.destroy()
+  bullet.anims.play('playerExplosion');
+  window.game.scene.scenes[7].time.delayedCall(250, kill, [bullet, thisScene.explosion], this);
+  thisScene.playerDead = true
+}
+
+export const kill = (objectOne, objectTwo) => {
+  objectOne.destroy();
+  if (objectTwo) {
+    objectTwo.destroy();
   }
 }
