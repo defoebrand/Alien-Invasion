@@ -10,6 +10,7 @@ import OptionsScene from './Scenes/OptionsScene';
 import CharacterSelectScene from './Scenes/CharacterSelectScene';
 import GamePlayScene from './Scenes/GamePlayScene';
 import GameOverScene from './Scenes/GameOverScene';
+import LeaderBoardScene from './Scenes/LeaderBoardScene';
 
 const body = document.querySelector('body')
 
@@ -48,6 +49,7 @@ class Game extends Phaser.Game {
     this.scene.add('CharacterSelect', CharacterSelectScene);
     this.scene.add('Game', GamePlayScene);
     this.scene.add('GameOver', GameOverScene);
+    this.scene.add('LeaderBoard', LeaderBoardScene);
 
     this.scene.start('Boot');
   }

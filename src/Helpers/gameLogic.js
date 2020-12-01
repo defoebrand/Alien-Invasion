@@ -34,6 +34,7 @@ export const chasePlayer = (enemy) => {
 export const gameReset = () => {
   // localStorage.setItem('previousScore', score);
   window.game.scene.start('GameOver');
+
 }
 
 export const explode = (bullet, object) => {
