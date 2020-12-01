@@ -36,8 +36,8 @@ export const gameReset = () => {
   window.game.scene.start('GameOver');
 }
 
-export const explode = (bullet) => {
-  bullet.anims.play('playerExplosion');
+export const explode = (bullet, object) => {
+  bullet.defaultPipeline.game.anims.play(`${window.game.scene.scenes[7].model.charSelect}BulletExplosion`);
   window.game.scene.scenes[7].time.delayedCall(250, kill, [bullet, ''], this);
 }
 

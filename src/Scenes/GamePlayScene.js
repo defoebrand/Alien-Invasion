@@ -154,12 +154,6 @@ export default class GamePlayScene extends Phaser.Scene {
     this.enemies.add(this.enemy)
 
     this.bombs = this.physics.add.group();
-
-    this.bomb.body.setVelocity(Phaser.Math.Between(-200, 200), 20);
-    this.bomb.body.setBounce(1);
-    this.bomb.body.setCollideWorldBounds(true);
-
-
     this.physics.add.collider(this.bombs, this.platforms);
     this.physics.add.collider(this.bombs, this.ground);
     this.physics.add.overlap(this.bombs, this.player, destroyEnemy, null, this);
@@ -167,7 +161,7 @@ export default class GamePlayScene extends Phaser.Scene {
     this.bullets = this.physics.add.group({
       allowGravity: false
     });
-    this.physi50.add.collider(this.bullets, this.platforms, explode, null, this);
+    this.physics.add.collider(this.bullets, this.platforms, explode, null, this);
     this.physics.add.collider(this.bullets, this.enemies, destroyEnemy, null, this);
     this.physics.add.collider(this.bullets, this.bombs, destroyEnemy, null, this);
 
@@ -183,7 +177,7 @@ export default class GamePlayScene extends Phaser.Scene {
     this.shootTimer = 0;
     this.round = 0;
     this.score = 0;
-    this.countdown = 500;
+    this.countdown = 50;
     this.lastDirection = 'right'
   }
 
@@ -217,33 +211,17 @@ export default class GamePlayScene extends Phaser.Scene {
       this.bomb.body.setBounce(1);
       this.bomb.body.setCollideWorldBounds(true);
 
-    } else if (this.player.active === false) {
-
-      this.gameOverTextShadowL = new GameText(this, -1, (600 / 2) - 126, 'Game Over', this.zone, '50px', '#000')
-      this.gameOverTextShadowR = new GameText(this, 1, (600 / 2) - 124, 'Game Over', this.zone, '50px', '#000')
-      this.gameOverTextShadowL = new GameText(this, -1, (600 / 2) - 124, 'Game Over', this.zone, '50px', '#000')
-      this.gameOverTextShadowR = new GameText(this, 1, (600 / 2) - 126, 'Game Over', this.zone, '50px', '#000')
-
-      this.gameOverText = new GameText(this, 0, (600 / 2) - 125, 'Game Over', this.zone, '50px', '#d90922')
-
-      if (this.countdown === 0) {
-        this.gameOverTextShadowR = new GameText(this, 1, 600 / 2 - 75, 'Out of Time!', this.zone, '25px', '#000')
-      }
-
-      this.physics.pause();
-      this.time.delayedCall(500, gameReset, [], this);
-
-      // this.player = new Character(this, 100, 475, this.model.charSelect);
-      // this.physics.add.collider(this.player, this.platforms);
-      // this.physics.add.collider(this.player, this.ground);
-
     } else {
       this.shootTimer++;
       this.countdown--
       this.timerText.text.setText('Time: ' + (this.countdown / 100).toFixed(0) + ' s');
 
       if (this.countdown === 0) {
-        this.player.active = false;
+        this.gameOverTextShadowR = new GameText(this, 1, 600 / 2 - 225, 'Out of Time!', this.zone, '28px', '#000')
+        this.physics.pause();
+        this.time.delayedCall(500, gameReset, [], this);
+
+        // this.player.active = false;
       }
 
       if (this.cursors.left.isDown) {
@@ -272,7 +250,7 @@ export default class GamePlayScene extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
           this.bullet = new Artillery(this, this.player.x, this.player.y - this.enemyGunHeight, `${this.model.charSelect}Bullet`)
           this.bullets.add(this.bullet)
-          this.time.delayedCall(2250, explode, this.bullet, this);
+          this.time.delayedCall(2250, explode, [this.bullet, ''], this);
           if (this.lastDirection === 'left') {
             this.bullet.body.setVelocity(-300, 0);
           } else {
