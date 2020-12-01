@@ -1,73 +1,58 @@
-export const chasePlayer = (enemy, player, scene) => {
-  // this.model = this.sys.game.globals.model;
+import {
+  Artillery
+} from '../Objects/Artillery'
 
-  // console.log(enemy.body)
-  // console.log(player.body)
-  scene.physics.add.moveToObject(enemy, player, 150);
-}
+export const chasePlayer = (enemy) => {
+  let thisScene = window.game.scene.scenes[7];
 
-export const destroyEnemies = (player, enemy) => {
-  var explosion = this.physics.add.sprite(enemy.x, enemy.y, `${enemySelection}Explosion`);
-  explosion.anims.play('playerExplosion');
-  explosion.body.setAllowGravity(false);
-  explosion.setVelocityX(50);
-  bullet.disableBody(true, true);
-  var explosionTimer = this.time.delayedCall(300, kill, [explosion, ''], this);
+  if (enemy.x >= thisScene.player.x) {
+    enemy.body.setVelocityX(-150)
+    enemy.anims.play('enemyShootLeft')
+    enemy.direction = 'left'
+  } else {
+    enemy.body.setVelocityX(150)
+    enemy.anims.play('enemyShoot')
+    enemy.direction = 'right'
+  }
 
-  enemy.setActive(false).setVisible(false)
-  this.physics.world.disableBody(enemy);
-  enemies.remove(enemy)
+  if (Phaser.Math.Difference(enemy.x, thisScene.player.x) < 5) {
+    enemy.body.x = thisScene.player.x + Phaser.Math.Between(-300, 300);
+  }
 
-  round += 1;
-  score += 10;
-  scoreText.setText('Score: ' + score);
-  time = 1500;
-}
-
-export const hitBomb = (player, bomb) => {
-  this.physics.pause();
-  player.setTint(0xff0000);
-  player.anims.play('turn');
-  bomb.anims.play('enemyExplosion');
-  gameOver = true;
-  var timer = this.time.delayedCall(1500, sceneGameOver, [], this);
-}
-
-export const sceneGameOver = () => {
-  localStorage.setItem('previousScore', score);
-  this.scene.start('GameOver');
+  if (thisScene.shootTimer % 75 === 0) {
+    thisScene.enemyBullet = new Artillery(thisScene, enemy.x, enemy.y - thisScene.enemyGunHeight, `${thisScene.enemySelect}Bullet`)
+    thisScene.physics.add.collider(thisScene.enemyBullet, thisScene.player, destroyEnemy, null, thisScene)
+    if (enemy.direction === 'left') {
+      thisScene.enemyBullet.body.setVelocity(-300, 0);
+    } else {
+      thisScene.enemyBullet.body.setVelocity(300, 0);
+    }
+    thisScene.time.delayedCall(2250, kill, [thisScene.enemyBullet, ''], thisScene);
+  }
 }
 
 export const gameReset = () => {
-  this.physics.pause();
-  player.setTint(0xff0000);
-  player.anims.play('turn');
-  gameOver = true;
-  var timer = this.time.delayedCall(1500, sceneGameOver, [], this);
+  // localStorage.setItem('previousScore', score);
+  window.game.scene.start('GameOver');
 }
 
-export const explode = (bullet, object) => {
-  bullet.anims.play('playerExplosion')
-  var timer = this.time.delayedCall(300, kill, [bullet, ''], this);
-}
-
-export const destroy = (bullet, enemy) => {
-
+export const explode = (bullet) => {
   bullet.anims.play('playerExplosion');
-  enemy.setActive(false).setVisible(false)
+  window.game.scene.scenes[7].time.delayedCall(250, kill, [bullet, ''], this);
+}
 
-  // enemy.gameObject.disableBody(true, true);
-  // this.time.delayedCall(300, kill, [bullet, enemy], this);
-  // var explosion = bullet.anims.play('playerExplosion')
-  // var explosionTimer = this.time.delayedCall(300, kill, [bullet, object], this);
+export const destroyEnemy = (bullet, object) => {
+  let thisScene = window.game.scene.scenes[7];
+  thisScene.explosion = thisScene.add.sprite(object.x, object.y, `${thisScene.model.charSelect}Bullet`)
+  thisScene.explosion.anims.play('playerExplosion')
+  object.destroy()
+  bullet.anims.play('playerExplosion');
+  window.game.scene.scenes[7].time.delayedCall(250, kill, [bullet, thisScene.explosion], this);
 }
 
 export const kill = (bullet, object) => {
-  bullet.disableBody(true, true);
+  bullet.destroy();
   if (object) {
-    object.anims.play('playerExplosion');
-    object.setActive(false).setVisible(false)
-    bombs.remove(object)
-    this.physics.world.disableBody(object);
+    object.destroy();
   }
 }

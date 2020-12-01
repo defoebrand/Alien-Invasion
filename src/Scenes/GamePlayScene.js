@@ -7,7 +7,11 @@ import {
 } from '../Objects/Artillery'
 import {
   chasePlayer,
-  destroy
+  destroyEnemy,
+  explode,
+  gameReset,
+  gameOver,
+  kill
 } from '../Helpers/gameLogic'
 
 export default class GamePlayScene extends Phaser.Scene {
@@ -16,20 +20,19 @@ export default class GamePlayScene extends Phaser.Scene {
   }
   preload() {
     this.model = this.sys.game.globals.model;
-    // this.charSelect = localStorage['charSelect'];
-    //
+
     if (this.model.charSelect === 'soldier') {
-      this.model.enemySelect = 'alien'
+      this.enemySelect = 'alien'
       this.model.gunHeight = 18;
-      this.model.enemyGunHeight = 0
+      this.enemyGunHeight = 0
     } else if (this.model.charSelect === 'alien') {
-      this.model.enemySelect = 'soldier'
+      this.enemySelect = 'soldier'
       this.model.gunHeight = 0;
-      this.model.enemyGunHeight = 18;
+      this.enemyGunHeight = 18;
     } else {
-      this.model.enemySelect = 'alien'
+      this.enemySelect = 'alien'
       this.model.gunHeight = 0;
-      this.model.enemyGunHeight = 0;
+      this.enemyGunHeight = 0;
     }
 
     this.anims.create({
@@ -50,16 +53,6 @@ export default class GamePlayScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
-
-    // this.anims.create({
-    //   key: 'turn',
-    //   frames: [{
-    //     key: `${characterSelection}`,
-    //     frame: 0
-    //   }],
-    //   frameRate: 20,
-    // });
-
     this.anims.create({
       key: 'jump',
       frames: [{
@@ -102,10 +95,10 @@ export default class GamePlayScene extends Phaser.Scene {
       repeat: -1
     });
     this.anims.create({
-      key: 'enemyExplosion',
-      frames: this.anims.generateFrameNumbers(`${this.model.charSelect}BulletExplosion`, {
+      key: 'playerDeath',
+      frames: this.anims.generateFrameNumbers(`${this.model.charSelect}Left`, {
         start: 0,
-        end: 3
+        end: 0
       }),
       frameRate: 10,
       repeat: -1
@@ -113,7 +106,7 @@ export default class GamePlayScene extends Phaser.Scene {
     this.anims.create({
       key: 'enemyShoot',
       frames: [{
-        key: `${this.model.enemySelect}Shoot`,
+        key: `${this.enemySelect}Shoot`,
         frame: 4
       }],
       frameRate: 20,
@@ -121,14 +114,14 @@ export default class GamePlayScene extends Phaser.Scene {
     this.anims.create({
       key: 'enemyShootLeft',
       frames: [{
-        key: `${this.model.enemySelect}ShootLeft`,
+        key: `${this.enemySelect}ShootLeft`,
         frame: 4
       }],
       frameRate: 20,
     });
     this.anims.create({
       key: 'enemyExplosion',
-      frames: this.anims.generateFrameNumbers(`${this.model.enemySelect}BulletExplosion`, {
+      frames: this.anims.generateFrameNumbers(`${this.enemySelect}BulletExplosion`, {
         start: 0,
         end: 3
       }),
@@ -137,159 +130,156 @@ export default class GamePlayScene extends Phaser.Scene {
     });
 
   }
+
   create() {
     this.add.image(400, 300, 'sky');
 
-    this.model.ground = this.physics.add.staticGroup();
-    this.model.ground.create(400, 568, 'ground').setScale(3).refreshBody();
+    this.ground = this.physics.add.staticGroup();
+    this.ground.create(400, 568, 'ground').setScale(3).refreshBody();
 
-
-    this.model.platforms = this.physics.add.staticGroup();
+    this.platforms = this.physics.add.staticGroup();
     for (let i = 0; i < Phaser.Math.Between(1, 3); i++) {
-      this.model.platforms.create(Phaser.Math.Between(0, 800), Phaser.Math.Between(200, 400), 'platform');
+      this.platforms.create(Phaser.Math.Between(0, 800), Phaser.Math.Between(200, 400), 'platform');
     }
 
-    this.model.player = new Character(this, 100, 475, this.model.charSelect);
-    this.model.lastDirection = 'right'
-    this.physics.add.collider(this.model.player, this.model.platforms);
-    this.physics.add.collider(this.model.player, this.model.ground);
+    this.player = new Character(this, 100, 475, this.model.charSelect);
+    this.physics.add.collider(this.player, this.platforms);
+    this.physics.add.collider(this.player, this.ground);
 
-    this.model.enemy = new Character(this, 375, 100, `${this.model.enemySelect}Left`, this.model.player)
+    this.enemy = new Character(this, 375, 100, `${this.enemySelect}Left`)
 
-    this.model.enemies = this.physics.add.group();
-    this.physics.add.collider(this.model.enemies, this.model.player);
-    // this.physics.add.overlap(this.model.player, this.model.enemies, gameReset, null, this);
-    this.physics.add.collider(this.model.enemies, this.model.ground);
-    // this.physics.add.collider(this.model.enemies, this.model.ground, chasePlayer(this.model.enemy, this.model.player, this), null, this);
-    // this.physics.add.collider(this.model.enemies, this.model.platforms);
-    // this.physics.add.collider(this.model.enemies, this.model.platforms, chasePlayer, null, this);
-    this.model.enemies.add(this.model.enemy)
+    this.enemies = this.physics.add.group();
+    this.physics.add.collider(this.enemies, this.ground, chasePlayer, null, this);
+    this.physics.add.collider(this.enemies, this.platforms, chasePlayer, null, this);
+    this.enemies.add(this.enemy)
 
-    this.model.bullets = this.physics.add.group({
-      allowGravity: false,
+    this.bombs = this.physics.add.group();
+
+    this.bomb.body.setVelocity(Phaser.Math.Between(-200, 200), 20);
+    this.bomb.body.setBounce(1);
+    this.bomb.body.setCollideWorldBounds(true);
+
+
+    this.physics.add.collider(this.bombs, this.platforms);
+    this.physics.add.collider(this.bombs, this.ground);
+    this.physics.add.overlap(this.bombs, this.player, destroyEnemy, null, this);
+
+    this.bullets = this.physics.add.group({
+      allowGravity: false
     });
-    this.physics.add.collider(this.model.bullets, this.model.enemies, destroy, null, this);
-    // this.physics.add.collider(bullets, enemies, destroyEnemies, null, this);
-    this.physics.add.collider(this.model.bullets, this.model.platforms);
-    // this.physics.add.collider(bullets, platforms,  explode, null, this);
-    this.physics.add.collider(this.model.bullets, this.model.bombs);
-    // this.physics.add.collider(bullets, bombs, destroy, null, this);
-
-    this.model.bombs = this.physics.add.group();
-    this.physics.add.collider(this.model.bombs, this.model.ground);
-    this.physics.add.collider(this.model.bombs, this.model.platforms);
-    this.physics.add.collider(this.model.bombs, this.model.player);
-    // this.physics.add.collider(player, this.model.bombs, hitBomb, null, this);
+    this.physi50.add.collider(this.bullets, this.platforms, explode, null, this);
+    this.physics.add.collider(this.bullets, this.enemies, destroyEnemy, null, this);
+    this.physics.add.collider(this.bullets, this.bombs, destroyEnemy, null, this);
 
     this.zone = this.add.zone(800 / 2, 0);
 
-    this.model.scoreText = new GameText(this, -300, 25, 'Score: 0', this.zone, '32px', '#000')
+    this.scoreText = new GameText(this, -300, 25, 'Score: 0', this.zone, '32px', '#000')
 
-    this.model.timerText = new GameText(this, 325, 25, 'Time: 0', this.zone, '22px', '#000')
+    this.timerText = new GameText(this, 300, 25, 'Time: 0', this.zone, '22px', '#000')
 
-    this.model.cursors = this.input.keyboard.createCursorKeys();
-    this.model.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.cursors = this.input.keyboard.createCursorKeys();
+    this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
-    this.model.shootTimer = 0;
-    this.model.round = 0;
+    this.shootTimer = 0;
+    this.round = 0;
+    this.score = 0;
+    this.countdown = 500;
+    this.lastDirection = 'right'
   }
 
   update() {
-    this.model.shootTimer++;
+    if (this.enemies.countActive(true) === 0) {
+      this.round += 1
+      this.score += 10;
+      this.countdown = 1500;
 
-    if ((this.model.enemy.x - this.model.player.x) >= 0) {
-      this.model.enemy.anims.play('enemyShootLeft')
-      this.model.enemyDirection = 'left'
-      // this.model.enemyImage = `${this.model.enemySelect}Left`
-    } else {
-      this.model.enemy.anims.play('enemyShoot')
-      this.model.enemyDirection = 'right'
-      // this.model.enemyImage = `${this.model.enemySelect}`
-    }
+      this.scoreText.text.setText('Score: ' + this.score);
 
-    if (this.model.shootTimer % 100 === 0) {
-      this.model.enemyBullet = new Artillery(this, this.model.enemy.x, this.model.enemy.y - this.model.enemyGunHeight, `${this.model.enemySelect}Bullet`)
-      this.physics.add.collider(this.model.enemyBullet, this.model.player)
-      if (this.model.enemyDirection === 'left') {
-        this.model.enemyBullet.body.setVelocity(-300, 0);
-      } else {
-        this.model.enemyBullet.body.setVelocity(300, 0);
-      }
-      // this.model.bullets.add(this.model.enemyBullet)
-      // this.physics.add.collider(enemyBullet, player, gameReset, null, this);
-    }
-
-
-    if (this.model.cursors.left.isDown) {
-      this.model.player.body.setVelocityX(-160);
-      this.model.lastDirection = 'left'
-      this.model.player.anims.play(this.model.lastDirection, true);
-    } else if (this.model.cursors.right.isDown) {
-      this.model.player.body.setVelocityX(160);
-      this.model.lastDirection = 'right'
-      this.model.player.anims.play(this.model.lastDirection, true);
-    } else {
-      this.model.player.body.setVelocityX(0);
-      this.model.player.anims.play(this.model.lastDirection);
-    }
-
-    if (this.model.cursors.up.isDown) {
-      if (this.model.lastDirection === 'left') {
-        this.model.player.anims.play('jumpLeft', true);
-      } else {
-        this.model.player.anims.play('jump', true);
-      }
-      if (this.model.player.body.touching.down) {
-        this.model.player.body.setVelocityY(-330);
-      }
-    }
-
-
-    if (this.model.cursors.space.isDown) {
-      if (Phaser.Input.Keyboard.JustDown(this.model.spacebar)) {
-        this.model.bullet = new Artillery(this, this.model.player.x, this.model.player.y - this.model.enemyGunHeight, `${this.model.charSelect}Bullet`)
-        this.model.bullets.add(this.model.bullet)
-        if (this.model.lastDirection === 'left') {
-          this.model.bullet.body.setVelocity(-300, 0);
-        } else {
-          this.model.bullet.body.setVelocity(300, 0);
-        }
-      }
-    }
-
-    // this.bulletPhaseOut = this.time.delayedCall(2250, kill, [bullet, ''], this);
-    // }
-
-
-    if (this.model.enemies.countActive(true) === 0) {
-      this.model.round += 1
-
-
-      if (this.model.round % 2 === 0) {
-        this.model.platforms.children.iterate(function(child) {
+      if (this.round % 2 === 0) {
+        this.platforms.children.iterate(function(child) {
           child.disableBody(true, true);
         });
-
         for (let i = 0; i < Phaser.Math.Between(1, 3); i++) {
-          this.model.platforms.create(Phaser.Math.Between(0, 800), Phaser.Math.Between(200, 400), 'platform');
+          this.platforms.create(Phaser.Math.Between(0, 800), Phaser.Math.Between(200, 400), 'platform');
         }
       }
 
-      // for (let i = 0; i < this.model.round; i++) {
-      this.model.enemy = new Character(this, (5 + (Phaser.Math.Between(0, 99)) * (this.model.round % 8)), Phaser.Math.Between(50, 475), this.model.enemyImage)
-      this.model.enemies.add(this.model.enemy)
+      // for (let i = 0; i < this.round; i++) {
+      this.enemy = new Character(this, Phaser.Math.Between(25, 775), Phaser.Math.Between(50, 475), this.enemyImage)
+      this.enemies.add(this.enemy)
       // }
 
+      this.positionX = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
-      this.model.x = (this.model.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+      this.bomb = new Artillery(this, this.positionX, 16, 'bomb')
+      this.bombs.add(this.bomb)
+      this.bomb.body.setVelocity(Phaser.Math.Between(-200, 200), 20);
+      this.bomb.body.setBounce(1);
+      this.bomb.body.setCollideWorldBounds(true);
 
-      this.model.bomb = new Artillery(this, this.model.x, 16, 'bomb')
-      this.model.bombs.add(this.model.bomb)
-      this.model.bomb.body.setVelocity(Phaser.Math.Between(-200, 200), 20);
-      this.model.bomb.body.setBounce(1);
-      this.model.bomb.body.setCollideWorldBounds(true);
-      this.model.bomb.body.setAllowGravity = false;
+    } else if (this.player.active === false) {
+
+      this.gameOverTextShadowL = new GameText(this, -1, (600 / 2) - 126, 'Game Over', this.zone, '50px', '#000')
+      this.gameOverTextShadowR = new GameText(this, 1, (600 / 2) - 124, 'Game Over', this.zone, '50px', '#000')
+      this.gameOverTextShadowL = new GameText(this, -1, (600 / 2) - 124, 'Game Over', this.zone, '50px', '#000')
+      this.gameOverTextShadowR = new GameText(this, 1, (600 / 2) - 126, 'Game Over', this.zone, '50px', '#000')
+
+      this.gameOverText = new GameText(this, 0, (600 / 2) - 125, 'Game Over', this.zone, '50px', '#d90922')
+
+      if (this.countdown === 0) {
+        this.gameOverTextShadowR = new GameText(this, 1, 600 / 2 - 75, 'Out of Time!', this.zone, '25px', '#000')
+      }
+
+      this.physics.pause();
+      this.time.delayedCall(500, gameReset, [], this);
+
+      // this.player = new Character(this, 100, 475, this.model.charSelect);
+      // this.physics.add.collider(this.player, this.platforms);
+      // this.physics.add.collider(this.player, this.ground);
+
+    } else {
+      this.shootTimer++;
+      this.countdown--
+      this.timerText.text.setText('Time: ' + (this.countdown / 100).toFixed(0) + ' s');
+
+      if (this.countdown === 0) {
+        this.player.active = false;
+      }
+
+      if (this.cursors.left.isDown) {
+        this.player.body.setVelocityX(-160);
+        this.lastDirection = 'left'
+        this.player.anims.play(this.lastDirection, true);
+      } else if (this.cursors.right.isDown) {
+        this.player.body.setVelocityX(160);
+        this.lastDirection = 'right'
+        this.player.anims.play(this.lastDirection, true);
+      } else {
+        this.player.body.setVelocityX(0);
+        this.player.anims.play(this.lastDirection);
+      }
+      if (this.cursors.up.isDown) {
+        if (this.lastDirection === 'left') {
+          this.player.anims.play('jumpLeft', true);
+        } else {
+          this.player.anims.play('jump', true);
+        }
+        if (this.player.body.touching.down) {
+          this.player.body.setVelocityY(-330);
+        }
+      }
+      if (this.cursors.space.isDown) {
+        if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
+          this.bullet = new Artillery(this, this.player.x, this.player.y - this.enemyGunHeight, `${this.model.charSelect}Bullet`)
+          this.bullets.add(this.bullet)
+          this.time.delayedCall(2250, explode, this.bullet, this);
+          if (this.lastDirection === 'left') {
+            this.bullet.body.setVelocity(-300, 0);
+          } else {
+            this.bullet.body.setVelocity(300, 0);
+          }
+        }
+      }
     }
   }
-
 }
