@@ -9,8 +9,6 @@ export default class CharButton extends Phaser.GameObjects.Container {
     this.x = x;
     this.y = y;
 
-    // this.model = this.sys.game.globals.model;
-
     this.button = this.scene.add.sprite(0, 0, key1).setInteractive();
     this.text = this.scene.add.text(0, 0, text, {
       fontSize: '32px',

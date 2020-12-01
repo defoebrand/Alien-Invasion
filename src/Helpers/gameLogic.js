@@ -51,10 +51,11 @@ export const explode = (bullet, object) => {
   var timer = this.time.delayedCall(300, kill, [bullet, ''], this);
 }
 
-export const destroy = (body, enemy) => {
-  console.log(enemy)
+export const destroy = (bullet, enemy) => {
 
-  body.anims.play('playerExplosion');
+  bullet.anims.play('playerExplosion');
+  enemy.setActive(false).setVisible(false)
+
   // enemy.gameObject.disableBody(true, true);
   // this.time.delayedCall(300, kill, [bullet, enemy], this);
   // var explosion = bullet.anims.play('playerExplosion')

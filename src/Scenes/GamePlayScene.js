@@ -3,8 +3,8 @@ import {
   Character
 } from '../Objects/Characters'
 import {
-  Bullet
-} from '../Objects/Bullet'
+  Artillery
+} from '../Objects/Artillery'
 import {
   chasePlayer,
   destroy
@@ -153,8 +153,9 @@ export default class GamePlayScene extends Phaser.Scene {
     this.model.lastDirection = 'right'
     this.physics.add.collider(this.model.player, this.model.platforms);
     this.physics.add.collider(this.model.player, this.model.ground);
-    // console.log(this.model.player)
-    this.model.enemy = new Character(this, 375, 100, this.model.enemySelect, this.model.player)
+
+    this.model.enemy = new Character(this, 375, 100, `${this.model.enemySelect}Left`, this.model.player)
+
     this.model.enemies = this.physics.add.group();
     this.physics.add.collider(this.model.enemies, this.model.player);
     // this.physics.add.overlap(this.model.player, this.model.enemies, gameReset, null, this);
@@ -188,9 +189,37 @@ export default class GamePlayScene extends Phaser.Scene {
 
     this.model.cursors = this.input.keyboard.createCursorKeys();
     this.model.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+    this.model.shootTimer = 0;
+    this.model.round = 0;
   }
 
   update() {
+    this.model.shootTimer++;
+
+    if ((this.model.enemy.x - this.model.player.x) >= 0) {
+      this.model.enemy.anims.play('enemyShootLeft')
+      this.model.enemyDirection = 'left'
+      // this.model.enemyImage = `${this.model.enemySelect}Left`
+    } else {
+      this.model.enemy.anims.play('enemyShoot')
+      this.model.enemyDirection = 'right'
+      // this.model.enemyImage = `${this.model.enemySelect}`
+    }
+
+    if (this.model.shootTimer % 100 === 0) {
+      this.model.enemyBullet = new Artillery(this, this.model.enemy.x, this.model.enemy.y - this.model.enemyGunHeight, `${this.model.enemySelect}Bullet`)
+      this.physics.add.collider(this.model.enemyBullet, this.model.player)
+      if (this.model.enemyDirection === 'left') {
+        this.model.enemyBullet.body.setVelocity(-300, 0);
+      } else {
+        this.model.enemyBullet.body.setVelocity(300, 0);
+      }
+      // this.model.bullets.add(this.model.enemyBullet)
+      // this.physics.add.collider(enemyBullet, player, gameReset, null, this);
+    }
+
+
     if (this.model.cursors.left.isDown) {
       this.model.player.body.setVelocityX(-160);
       this.model.lastDirection = 'left'
@@ -218,72 +247,49 @@ export default class GamePlayScene extends Phaser.Scene {
 
     if (this.model.cursors.space.isDown) {
       if (Phaser.Input.Keyboard.JustDown(this.model.spacebar)) {
-        this.model.bullet = new Bullet(this, this.model.player.x, this.model.player.y - this.model.enemyGunHeight, `${this.model.charSelect}Bullet`)
+        this.model.bullet = new Artillery(this, this.model.player.x, this.model.player.y - this.model.enemyGunHeight, `${this.model.charSelect}Bullet`)
         this.model.bullets.add(this.model.bullet)
         if (this.model.lastDirection === 'left') {
           this.model.bullet.body.setVelocity(-300, 0);
         } else {
           this.model.bullet.body.setVelocity(300, 0);
         }
-
-        // this.physics.add.collider(this.model.bullet, this.model.enemies, destroy, null, this);
-
       }
-
-
     }
-
-    // if (this.model.cursors.space.isDown) {
-    //   if (this.model.lastDirection === 'left') {
-    //     this.model.player.anims.play('shootLeft', true);
-    //     if (Phaser.Input.Keyboard.JustDown(this.model.spacebar)) {
-    //       this.model.bullet = new Bullet(this, this.model.player.x, this.model.player.y - this.model.enemyGunHeight, `${this.model.charSelect}Bullet`, this.model.lastDirection, [this.model.enemies, this.model.platforms, this.model.bombs])
-    //       this.physics.add.collider(this.model.bullet, this.model.enemies, destroy, null, this);
-    //       // this.model.bullets.add(this.model.bullet)
-    //     }
-    //   } else {
-    //     this.model.player.anims.play('shoot', true);
-    //     if (Phaser.Input.Keyboard.JustDown(this.model.spacebar)) {
-    //       this.model.bullet = new Bullet(this, this.model.player.x, this.model.player.y - this.model.enemyGunHeight, `${this.model.charSelect}Bullet`, this.model.lastDirection, [this.model.enemies, this.model.platforms, this.model.bombs])
-    //       this.physics.add.collider(this.model.bullet, this.model.enemies, destroy, null, this);
-    //       // this.model.bullets.add(this.model.bullet)
-    //     }
-    //   }
-    // }
 
     // this.bulletPhaseOut = this.time.delayedCall(2250, kill, [bullet, ''], this);
     // }
 
-    // if (enemies.countActive(true) === 0) {
-    //   if((enemy.x - player.x) >= 0){
-    //     enemyImage = `${this.model.enemySelect}`
-    //   }
-    //
-    //   if(round % 2 === 0){
-    //     platforms.children.iterate(function(child) {
-    //       child.disableBody(true, true);
-    //     });
-    //
-    //     for(let i = 0; i < Phaser.Math.Between(1,3); i++){
-    //       platforms.create(Phaser.Math.Between(0,800), Phaser.Math.Between(200,400), 'platform');
-    //     }
-    //   }
-    //
-    //   // for(let i = 0; i < round; i++){
-    //     enemy = new EnemyCharacter(this, (5 + (Phaser.Math.Between(0, 99)) * (round % 8)), Phaser.Math.Between(50, 475),  enemyImage)
-    //     enemies.add(enemy)
-    //     // }
-    //
-    //
-    //     var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-    //
-    //     var bomb = new Bomb(this, x, 16, 'bomb')
-    //     bombs.add(bomb)
-    //     bomb.body.setVelocity(Phaser.Math.Between(-200, 200), 20);
-    //     bomb.body.setBounce(1);
-    //     bomb.body.setCollideWorldBounds(true);
-    //     bomb.body.setAllowGravity = false;
-    // }
+
+    if (this.model.enemies.countActive(true) === 0) {
+      this.model.round += 1
+
+
+      if (this.model.round % 2 === 0) {
+        this.model.platforms.children.iterate(function(child) {
+          child.disableBody(true, true);
+        });
+
+        for (let i = 0; i < Phaser.Math.Between(1, 3); i++) {
+          this.model.platforms.create(Phaser.Math.Between(0, 800), Phaser.Math.Between(200, 400), 'platform');
+        }
+      }
+
+      // for (let i = 0; i < this.model.round; i++) {
+      this.model.enemy = new Character(this, (5 + (Phaser.Math.Between(0, 99)) * (this.model.round % 8)), Phaser.Math.Between(50, 475), this.model.enemyImage)
+      this.model.enemies.add(this.model.enemy)
+      // }
+
+
+      this.model.x = (this.model.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+      this.model.bomb = new Artillery(this, this.model.x, 16, 'bomb')
+      this.model.bombs.add(this.model.bomb)
+      this.model.bomb.body.setVelocity(Phaser.Math.Between(-200, 200), 20);
+      this.model.bomb.body.setBounce(1);
+      this.model.bomb.body.setCollideWorldBounds(true);
+      this.model.bomb.body.setAllowGravity = false;
+    }
   }
 
 }
