@@ -4,7 +4,6 @@ export default class Model {
     this._bgMusicPlaying = false;
   }
 
-
   set musicOn(value) {
     this._musicOn = value;
   }

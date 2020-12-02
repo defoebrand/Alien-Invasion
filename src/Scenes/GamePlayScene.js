@@ -6,7 +6,6 @@ import Character from '../Objects/Characters'
 import Artillery from '../Objects/Artillery'
 import {
   chasePlayer,
-  destroyEnemy,
   explode,
   killPlayer,
 } from '../Helpers/gameLogic'
@@ -162,8 +161,8 @@ export default class GamePlayScene extends Phaser.Scene {
       allowGravity: false
     });
     this.physics.add.collider(this.bullets, this.platforms, explode, null, this);
-    this.physics.add.collider(this.bullets, this.enemies, destroyEnemy, null, this);
-    this.physics.add.collider(this.bullets, this.bombs, destroyEnemy, null, this);
+    this.physics.add.collider(this.enemies, this.bullets, explode, null, this);
+    this.physics.add.collider(this.bombs, this.bullets, explode, null, this);
 
     this.zone = this.add.zone(800 / 2, 0);
 

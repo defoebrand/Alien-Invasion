@@ -14,24 +14,31 @@ import LeaderBoardScene from './Scenes/LeaderBoardScene';
 
 const body = document.querySelector('body')
 
-const form = document.createElement('form')
+const playerForm = document.createElement('form');
+playerForm.classList.add('playerForm');
 
-const cityInput = document.createElement('input')
-cityInput.type = 'text'
-cityInput.placeholder = 'Enter Text...'
-form.appendChild(cityInput)
+
+const nameInput = document.createElement('input')
+nameInput.type = 'text'
+nameInput.placeholder = 'Please Enter Your Name to Save Your Score...';
+
+playerForm.appendChild(nameInput)
 
 const submitBtn = document.createElement('input')
 submitBtn.type = 'submit'
-submitBtn.value = "Enter Text"
+submitBtn.value = "Save Name"
+submitBtn.classList.add('submitBtn');
 submitBtn.onclick = (e) => {
   e.preventDefault()
-  alert(cityInput.value)
+  localStorage.setItem('name', nameInput.value)
+  body.removeChild(playerForm)
+  body.removeChild(submitBtn)
 }
-form.appendChild(submitBtn)
+playerForm.appendChild(submitBtn)
 
-body.appendChild(form)
-
+if (!localStorage['name']) {
+  body.appendChild(playerForm)
+}
 
 class Game extends Phaser.Game {
   constructor() {

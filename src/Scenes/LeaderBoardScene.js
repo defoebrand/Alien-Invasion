@@ -43,7 +43,6 @@ export default class LeaderBoardScene extends Phaser.Scene {
               delay: 1500,
               onComplete: function() {
                 this.destroy;
-                // this.scene.start('Credits');
               }.bind(this)
             });
 

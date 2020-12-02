@@ -13,7 +13,7 @@ const createGame = (input) => {
       console.log(data)
     })
   }).catch(function(err) {
-    // console.log(err)
+    console.log(err)
   });
 }
 
@@ -34,7 +34,7 @@ const addScores = (name, score) => {
       console.log(data)
     })
   }).catch(function(err) {
-    // console.log(err)
+    console.log(err)
   });
 }
 
@@ -48,7 +48,7 @@ const getScores = async () => {
     const scoresJson = await allScores.json();
     return scoresJson;
   } catch (err) {
-    // console.log(err);
+    console.log(err);
   }
 }
 

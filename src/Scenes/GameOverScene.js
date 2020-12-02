@@ -2,9 +2,6 @@ import {
   GameText
 } from '../Objects/GameText'
 import {
-  kill
-} from '../Helpers/gameLogic'
-import {
   addScores
 } from '/src/Conf/leaderAPI.js'
 

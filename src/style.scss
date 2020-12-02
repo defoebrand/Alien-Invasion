@@ -4,3 +4,20 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+input {
+  width: 300px;
+  padding: 5px;
+}
+
+.playerForm {
+  @extend body;
+
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 10px;
+}
+
+.submitBtn {
+  width: 100px;
+}

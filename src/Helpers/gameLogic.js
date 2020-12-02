@@ -36,28 +36,22 @@ export const explode = (bullet, object) => {
   let thisScene = window.game.scene.scenes[7];
   thisScene.explosion = thisScene.add.sprite(bullet.x, bullet.y, `${thisScene.model.charSelect}Bullet`)
   thisScene.explosion.anims.play(`${thisScene.model.charSelect}BulletExplosion`)
-  bullet.destroy();
-  thisScene.time.delayedCall(50, kill, [thisScene.explosion, ''], this);
-}
-
-export const destroyEnemy = (bullet, object) => {
-  let thisScene = window.game.scene.scenes[7];
-  thisScene.explosion = thisScene.add.sprite(object.x, object.y, `${thisScene.model.charSelect}Bullet`)
-  thisScene.explosion.anims.play(`${thisScene.model.charSelect}BulletExplosion`)
-  object.destroy();
-  thisScene.time.delayedCall(250, kill, [thisScene.explosion, bullet], this);
+  thisScene.time.delayedCall(5, kill, [bullet], this);
+  thisScene.time.delayedCall(250, kill, [thisScene.explosion], this);
 }
 
 export const killPlayer = (bullet, object) => {
   let thisScene = window.game.scene.scenes[7];
   thisScene.playerDead = true
-  thisScene.time.delayedCall(25, destroyEnemy, ['', object], this);
+  thisScene.time.delayedCall(25, explode, [object], this);
   thisScene.time.delayedCall(2500, gameReset, [thisScene], this);
 }
 
 
 export const kill = (objectOne, objectTwo) => {
-  objectOne.destroy();
+  if (objectOne) {
+    objectOne.destroy();
+  }
   if (objectTwo) {
     objectTwo.destroy();
   }
