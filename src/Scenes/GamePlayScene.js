@@ -1,4 +1,7 @@
-import GameText from '../Objects/GameText'
+import {
+  GameText,
+  TextBorder
+} from '../Objects/GameText'
 import Character from '../Objects/Characters'
 import Artillery from '../Objects/Artillery'
 import {
@@ -213,10 +216,14 @@ export default class GamePlayScene extends Phaser.Scene {
 
     } else if (this.playerDead === true) {
       this.model.score = this.score;
-
       this.physics.pause();
-      // this.player.destroy();
-      this.time.delayedCall(50, gameReset, [this], this);
+      this.player.destroy();
+
+      this.gameOverTextBorder = new TextBorder(this, 0, (600 / 2) - 150, 'Game Over', this.zone, '50px', '#000')
+
+      this.gameOverText = new GameText(this, 0, (600 / 2) - 150, 'Game Over', this.zone, '50px', '#d90922')
+
+      this.time.delayedCall(3500, gameReset, [this], this);
 
     } else {
       this.shootTimer++;
@@ -224,8 +231,8 @@ export default class GamePlayScene extends Phaser.Scene {
       this.timerText.text.setText('Time: ' + (this.countdown / 100).toFixed(0) + ' s');
 
       if (this.countdown === 0) {
-        this.gameOverTextShadowR = new GameText(this, 1, 600 / 2 - 225, 'Out of Time!', this.zone, '28px', '#000')
-        this.time.delayedCall(50, gameReset, [this], this);
+        this.outOfTime = new GameText(this, 1, 600 / 2 - 225, 'Out of Time!', this.zone, '28px', '#000')
+        this.time.delayedCall(3500, gameReset, [this], this);
         this.playerDead = true
       }
 

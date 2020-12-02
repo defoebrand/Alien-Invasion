@@ -19,7 +19,6 @@ export const chasePlayer = (enemy) => {
   if (Phaser.Math.Difference(enemy.x, thisScene.player.x) < 50) {
     enemy.body.x = thisScene.player.x + Phaser.Math.Between(-200, 200);
   }
-  // console.log(thisScene)
 
   if (thisScene.shootTimer % 75 === 0) {
     thisScene.enemyBullet = new Artillery(thisScene, enemy.x, enemy.y - thisScene.enemyGunHeight, `${thisScene.enemySelect}Bullet`)
@@ -34,7 +33,6 @@ export const chasePlayer = (enemy) => {
 }
 
 export const gameReset = (scene) => {
-  // console.log(window.game.scene.scenes)
   scene.scene.start('GameOver');
 
 }
@@ -61,15 +59,10 @@ export const killPlayer = (bullet, object) => {
   bullet.anims.play('playerExplosion');
   window.game.scene.scenes[7].time.delayedCall(250, kill, [bullet, thisScene.explosion], this);
   thisScene.playerDead = true
-
-  // thisScene.physics.pause();
-  // thisScene.player.destroy();
-  // thisScene.time.delayedCall(50, gameReset, [], this);
 }
 
 
 export const kill = (objectOne, objectTwo) => {
-  console.log(objectOne)
   objectOne.destroy();
   if (objectTwo) {
     objectTwo.destroy();

@@ -1,4 +1,7 @@
-import GameText from '/src/Objects/GameText.js'
+import {
+  GameText,
+  TextBorder
+} from '/src/Objects/GameText.js'
 import SoundTrack from '/src/Assets/Dafunk[WeBelieveInGoa]Remix.m4a'
 import SelectArrow from '/src/Assets/buttonArrow.png'
 import SelectEmpty from '/src/Assets/buttonEmpty.png'

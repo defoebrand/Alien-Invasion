@@ -1,5 +1,7 @@
 import Button from '../Objects/Button'
-import GameText from '../Objects/GameText'
+import {
+  GameText
+} from '../Objects/GameText'
 
 export default class OptionsScene extends Phaser.Scene {
   constructor() {

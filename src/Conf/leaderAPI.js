@@ -52,7 +52,7 @@ const getScores = (game) => {
     mode: 'cors',
   }).then(function(response) {
     response.json().then((data) => {
-      // console.log(data.result)
+      console.log(data)
 
       data.result.sort((a, b) => {
         return b.score - a.score;

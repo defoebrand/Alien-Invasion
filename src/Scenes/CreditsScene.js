@@ -1,4 +1,6 @@
-import GameText from '../Objects/GameText'
+import {
+  GameText
+} from '../Objects/GameText'
 
 export default class CreditsScene extends Phaser.Scene {
   constructor() {
@@ -37,8 +39,8 @@ export default class CreditsScene extends Phaser.Scene {
       targets: this.plugText,
       y: 100,
       ease: 'Power1',
-      duration: 7500,
-      delay: 3750,
+      duration: 5000,
+      delay: 2500,
       onComplete: function() {
         this.destroy;
         this.scene.start('Title');
