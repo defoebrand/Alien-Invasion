@@ -36,7 +36,7 @@ const addScores = (name, score, id) => {
     }
   }).then(function(response) {
     response.json().then((data) => {
-      console.log(data)
+      // console.log(data)
     })
   }).catch(function(err) {
     console.log(err)
@@ -52,7 +52,7 @@ const getScores = (game) => {
     mode: 'cors',
   }).then(function(response) {
     response.json().then((data) => {
-      console.log(data.result)
+      // console.log(data.result)
 
       data.result.sort((a, b) => {
         return b.score - a.score;

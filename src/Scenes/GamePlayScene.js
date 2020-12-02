@@ -142,11 +142,12 @@ export default class GamePlayScene extends Phaser.Scene {
     this.physics.add.collider(this.player, this.platforms);
     this.physics.add.collider(this.player, this.ground);
 
-    this.enemy = new Character(this, 375, 100, `${this.enemySelect}Left`)
 
     this.enemies = this.physics.add.group();
     this.physics.add.collider(this.enemies, this.ground, chasePlayer, null, this);
     this.physics.add.collider(this.enemies, this.platforms, chasePlayer, null, this);
+
+    this.enemy = new Character(this, 400, 200, `${this.enemySelect}Left`)
     this.enemies.add(this.enemy)
 
     this.bombs = this.physics.add.group();
@@ -182,11 +183,13 @@ export default class GamePlayScene extends Phaser.Scene {
     if (this.enemies.countActive(true) === 0) {
       this.round += 1
       this.score += 10;
-      this.countdown += 1000;
+      this.countdown += 500;
 
       this.scoreText.text.setText('Score: ' + this.score);
 
-      if (this.round % 2 === 0) {
+      this.positionX = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+      if (this.round % 3 === 0) {
         this.platforms.children.iterate(function(child) {
           child.disableBody(true, true);
         });
@@ -195,14 +198,7 @@ export default class GamePlayScene extends Phaser.Scene {
         }
       }
 
-      // // for (let i = 0; i < Math.ceil(this.round / 3); i++) {
-      this.newEnemy = new Character(this, 400, 300, this.enemyImage)
-      this.enemies.add(this.newEnemy)
-      // // }
-
-      this.positionX = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-
-      if (this.round % 5 === 0) {
+      if (this.round % 2 === 0) {
         this.bomb = new Artillery(this, this.positionX, 16, 'bomb')
         this.bombs.add(this.bomb)
         this.bomb.body.setVelocity(Phaser.Math.Between(-200, 200), 20);
@@ -210,11 +206,17 @@ export default class GamePlayScene extends Phaser.Scene {
         this.bomb.body.setCollideWorldBounds(true);
       }
 
+      for (let i = 0; i < this.round % 3; i++) {
+        this.enemy = new Character(this, 400, Phaser.Math.Between(200, 400), `${this.enemySelect}Left`)
+        this.enemies.add(this.enemy)
+      }
+
     } else if (this.playerDead === true) {
-      this.physics.pause();
-      this.player.destroy();
       this.model.score = this.score;
-      this.time.delayedCall(50, gameReset, [], this);
+
+      this.physics.pause();
+      // this.player.destroy();
+      this.time.delayedCall(50, gameReset, [this], this);
 
     } else {
       this.shootTimer++;
@@ -223,15 +225,9 @@ export default class GamePlayScene extends Phaser.Scene {
 
       if (this.countdown === 0) {
         this.gameOverTextShadowR = new GameText(this, 1, 600 / 2 - 225, 'Out of Time!', this.zone, '28px', '#000')
-        this.playerDead = true;
+        this.time.delayedCall(50, gameReset, [this], this);
+        this.playerDead = true
       }
-
-      // if (this.shootTimer % 250 === 0) {
-      //   for (let i = 0; i < Math.floor(this.round / 2); i++) {
-      //     this.enemy = new Character(this, 0, 0, this.enemyImage)
-      //     this.enemies.add(this.enemy)
-      //   }
-      // }
 
       if (this.cursors.left.isDown) {
         this.player.body.setVelocityX(-160);
