@@ -8,9 +8,7 @@ import {
   chasePlayer,
   destroyEnemy,
   explode,
-  gameReset,
   killPlayer,
-  kill
 } from '../Helpers/gameLogic'
 
 export default class GamePlayScene extends Phaser.Scene {
@@ -19,23 +17,25 @@ export default class GamePlayScene extends Phaser.Scene {
   }
   preload() {
     this.model = this.sys.game.globals.model;
+    this.player = ''
 
     if (this.model.charSelect === 'soldier') {
       this.enemySelect = 'alien'
-      this.model.gunHeight = 18;
+      this.gunHeight = 18;
       this.enemyGunHeight = 0
     } else if (this.model.charSelect === 'alien') {
       this.enemySelect = 'soldier'
-      this.model.gunHeight = 0;
+      this.gunHeight = 0;
       this.enemyGunHeight = 18;
     } else {
       this.enemySelect = 'alien'
-      this.model.gunHeight = 0;
+      this.gunHeight = 0;
       this.enemyGunHeight = 0;
     }
 
+
     this.anims.create({
-      key: 'left',
+      key: `${this.model.charSelect}Left`,
       frames: this.anims.generateFrameNumbers(`${this.model.charSelect}Left`, {
         start: 0,
         end: 6
@@ -44,7 +44,7 @@ export default class GamePlayScene extends Phaser.Scene {
       repeat: -1
     });
     this.anims.create({
-      key: 'right',
+      key: `${this.model.charSelect}Right`,
       frames: this.anims.generateFrameNumbers(`${this.model.charSelect}`, {
         start: 6,
         end: 0
@@ -53,7 +53,7 @@ export default class GamePlayScene extends Phaser.Scene {
       repeat: -1
     });
     this.anims.create({
-      key: 'jump',
+      key: `${this.model.charSelect}Jump`,
       frames: [{
         key: `${this.model.charSelect}Jump`,
         frame: 0
@@ -61,7 +61,7 @@ export default class GamePlayScene extends Phaser.Scene {
       frameRate: 20,
     });
     this.anims.create({
-      key: 'jumpLeft',
+      key: `${this.model.charSelect}JumpLeft`,
       frames: [{
         key: `${this.model.charSelect}JumpLeft`,
         frame: 0
@@ -69,7 +69,7 @@ export default class GamePlayScene extends Phaser.Scene {
       frameRate: 20,
     });
     this.anims.create({
-      key: 'shoot',
+      key: `${this.model.charSelect}Shoot`,
       frames: [{
         key: `${this.model.charSelect}Shoot`,
         frame: 4
@@ -77,7 +77,7 @@ export default class GamePlayScene extends Phaser.Scene {
       frameRate: 20,
     });
     this.anims.create({
-      key: 'shootLeft',
+      key: `${this.model.charSelect}ShootLeft`,
       frames: [{
         key: `${this.model.charSelect}ShootLeft`,
         frame: 4
@@ -85,7 +85,7 @@ export default class GamePlayScene extends Phaser.Scene {
       frameRate: 20,
     });
     this.anims.create({
-      key: 'playerExplosion',
+      key: `${this.model.charSelect}BulletExplosion`,
       frames: this.anims.generateFrameNumbers(`${this.model.charSelect}BulletExplosion`, {
         start: 0,
         end: 3
@@ -94,7 +94,7 @@ export default class GamePlayScene extends Phaser.Scene {
       repeat: -1
     });
     this.anims.create({
-      key: 'playerDeath',
+      key: `${this.model.charSelect}Death`,
       frames: this.anims.generateFrameNumbers(`${this.model.charSelect}Left`, {
         start: 0,
         end: 0
@@ -103,7 +103,7 @@ export default class GamePlayScene extends Phaser.Scene {
       repeat: -1
     });
     this.anims.create({
-      key: 'enemyShoot',
+      key: `${this.enemySelect}Shoot`,
       frames: [{
         key: `${this.enemySelect}Shoot`,
         frame: 4
@@ -111,7 +111,7 @@ export default class GamePlayScene extends Phaser.Scene {
       frameRate: 20,
     });
     this.anims.create({
-      key: 'enemyShootLeft',
+      key: `${this.enemySelect}ShootLeft`,
       frames: [{
         key: `${this.enemySelect}ShootLeft`,
         frame: 4
@@ -119,7 +119,7 @@ export default class GamePlayScene extends Phaser.Scene {
       frameRate: 20,
     });
     this.anims.create({
-      key: 'enemyExplosion',
+      key: `${this.enemySelect}BulletExplosion`,
       frames: this.anims.generateFrameNumbers(`${this.enemySelect}BulletExplosion`, {
         start: 0,
         end: 3
@@ -141,7 +141,7 @@ export default class GamePlayScene extends Phaser.Scene {
       this.platforms.create(Phaser.Math.Between(0, 800), Phaser.Math.Between(200, 400), 'platform');
     }
 
-    this.player = new Character(this, 100, 475, this.model.charSelect);
+    this.player = new Character(this, 100, 475, `${this.model.charSelect}Right`);
     this.physics.add.collider(this.player, this.platforms);
     this.physics.add.collider(this.player, this.ground);
 
@@ -176,19 +176,19 @@ export default class GamePlayScene extends Phaser.Scene {
 
     this.shootTimer = 0;
     this.round = 0;
-    this.score = 0;
+    this.model.score = 0;
     this.countdown = 500;
-    this.lastDirection = 'right'
+    this.lastDirection = 'Right'
     this.playerDead = false;
   }
 
   update() {
     if (this.enemies.countActive(true) === 0) {
       this.round += 1
-      this.score += 10;
-      this.countdown += 500;
+      this.model.score += 10;
+      this.countdown = 1000;
 
-      this.scoreText.text.setText('Score: ' + this.score);
+      this.scoreText.text.setText('Score: ' + this.model.score);
 
       this.positionX = (this.player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
@@ -209,21 +209,18 @@ export default class GamePlayScene extends Phaser.Scene {
         this.bomb.body.setCollideWorldBounds(true);
       }
 
-      for (let i = 0; i < this.round % 3; i++) {
-        this.enemy = new Character(this, 400, Phaser.Math.Between(200, 400), `${this.enemySelect}Left`)
+      for (let i = 0; i < (this.round % 2) + 1; i++) {
+        this.enemy = new Character(this, Phaser.Math.Between(300, 500), Phaser.Math.Between(100, 500), `${this.enemySelect}Left`)
         this.enemies.add(this.enemy)
       }
 
     } else if (this.playerDead === true) {
-      this.model.score = this.score;
       this.physics.pause();
-      this.player.destroy();
+      this.time.delayedCall(250, killPlayer, ['', this.player], this);
 
       this.gameOverTextBorder = new TextBorder(this, 0, (600 / 2) - 150, 'Game Over', this.zone, '50px', '#000')
 
       this.gameOverText = new GameText(this, 0, (600 / 2) - 150, 'Game Over', this.zone, '50px', '#d90922')
-
-      this.time.delayedCall(3500, gameReset, [this], this);
 
     } else {
       this.shootTimer++;
@@ -232,38 +229,37 @@ export default class GamePlayScene extends Phaser.Scene {
 
       if (this.countdown === 0) {
         this.outOfTime = new GameText(this, 1, 600 / 2 - 225, 'Out of Time!', this.zone, '28px', '#000')
-        this.time.delayedCall(3500, gameReset, [this], this);
         this.playerDead = true
       }
 
       if (this.cursors.left.isDown) {
         this.player.body.setVelocityX(-160);
-        this.lastDirection = 'left'
-        this.player.anims.play(this.lastDirection, true);
+        this.lastDirection = 'Left'
+        this.player.anims.play(`${this.model.charSelect}${this.lastDirection}`, true);
       } else if (this.cursors.right.isDown) {
         this.player.body.setVelocityX(160);
-        this.lastDirection = 'right'
-        this.player.anims.play(this.lastDirection, true);
+        this.lastDirection = 'Right'
+        this.player.anims.play(`${this.model.charSelect}${this.lastDirection}`, true);
       } else {
         this.player.body.setVelocityX(0);
-        this.player.anims.play(this.lastDirection);
+        this.player.anims.play(`${this.model.charSelect}${this.lastDirection}`);
       }
       if (this.cursors.up.isDown) {
-        if (this.lastDirection === 'left') {
-          this.player.anims.play('jumpLeft', true);
-        } else {
-          this.player.anims.play('jump', true);
-        }
         if (this.player.body.touching.down) {
           this.player.body.setVelocityY(-330);
+        }
+        if (this.lastDirection === 'Left') {
+          this.player.anims.play(`${this.model.charSelect}JumpLeft`, true);
+        } else {
+          this.player.anims.play(`${this.model.charSelect}Jump`, true);
         }
       }
       if (this.cursors.space.isDown) {
         if (Phaser.Input.Keyboard.JustDown(this.spacebar)) {
-          this.bullet = new Artillery(this, this.player.x, this.player.y - this.model.gunHeight, `${this.model.charSelect}Bullet`)
+          this.bullet = new Artillery(this, this.player.x, this.player.y - this.gunHeight, `${this.model.charSelect}Bullet`)
           this.bullets.add(this.bullet)
-          this.time.delayedCall(2250, explode, [this.bullet, ''], this);
-          if (this.lastDirection === 'left') {
+          this.time.delayedCall(2250, explode, [this.bullet], this);
+          if (this.lastDirection === 'Left') {
             this.bullet.body.setVelocity(-300, 0);
           } else {
             this.bullet.body.setVelocity(300, 0);

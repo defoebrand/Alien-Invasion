@@ -5,11 +5,11 @@ export const chasePlayer = (enemy) => {
 
   if (enemy.x >= thisScene.player.x) {
     enemy.body.setVelocityX(-150)
-    enemy.anims.play('enemyShootLeft')
+    enemy.anims.play(`${thisScene.enemySelect}ShootLeft`)
     enemy.direction = 'left'
   } else {
     enemy.body.setVelocityX(150)
-    enemy.anims.play('enemyShoot')
+    enemy.anims.play(`${thisScene.enemySelect}Shoot`)
     enemy.direction = 'right'
   }
 
@@ -32,33 +32,27 @@ export const chasePlayer = (enemy) => {
   }
 }
 
-export const gameReset = (scene) => {
-  scene.scene.start('GameOver');
-
-}
-
 export const explode = (bullet, object) => {
-  bullet.defaultPipeline.game.anims.play(`${window.game.scene.scenes[7].model.charSelect}BulletExplosion`);
-  window.game.scene.scenes[7].time.delayedCall(250, kill, [bullet, ''], this);
+  let thisScene = window.game.scene.scenes[7];
+  thisScene.explosion = thisScene.add.sprite(bullet.x, bullet.y, `${thisScene.model.charSelect}Bullet`)
+  thisScene.explosion.anims.play(`${thisScene.model.charSelect}BulletExplosion`)
+  bullet.destroy();
+  thisScene.time.delayedCall(50, kill, [thisScene.explosion, ''], this);
 }
 
 export const destroyEnemy = (bullet, object) => {
   let thisScene = window.game.scene.scenes[7];
   thisScene.explosion = thisScene.add.sprite(object.x, object.y, `${thisScene.model.charSelect}Bullet`)
-  thisScene.explosion.anims.play('playerExplosion')
-  object.destroy()
-  bullet.anims.play('playerExplosion');
-  window.game.scene.scenes[7].time.delayedCall(250, kill, [bullet, thisScene.explosion], this);
+  thisScene.explosion.anims.play(`${thisScene.model.charSelect}BulletExplosion`)
+  object.destroy();
+  thisScene.time.delayedCall(250, kill, [thisScene.explosion, bullet], this);
 }
 
 export const killPlayer = (bullet, object) => {
   let thisScene = window.game.scene.scenes[7];
-  thisScene.explosion = thisScene.add.sprite(object.x, object.y, `${thisScene.model.charSelect}Bullet`)
-  thisScene.explosion.anims.play('playerExplosion')
-  object.destroy()
-  bullet.anims.play('playerExplosion');
-  window.game.scene.scenes[7].time.delayedCall(250, kill, [bullet, thisScene.explosion], this);
   thisScene.playerDead = true
+  thisScene.time.delayedCall(25, destroyEnemy, ['', object], this);
+  thisScene.time.delayedCall(2500, gameReset, [thisScene], this);
 }
 
 
@@ -67,4 +61,8 @@ export const kill = (objectOne, objectTwo) => {
   if (objectTwo) {
     objectTwo.destroy();
   }
+}
+
+export const gameReset = (scene) => {
+  scene.scene.start('GameOver');
 }

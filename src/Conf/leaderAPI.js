@@ -1,5 +1,3 @@
-// createGame(title.value)
-
 const createGame = (input) => {
   fetch('https://us-central1-js-capstone-backend.cloudfunctions.net/api/games', {
     mode: 'cors',
@@ -13,17 +11,14 @@ const createGame = (input) => {
   }).then(function(response) {
     response.json().then((data) => {
       console.log(data)
-
-      // gameContainer.textContent = gameID
     })
   }).catch(function(err) {
-    console.log(err)
+    // console.log(err)
   });
 }
 
-// addScores(playerName.value, playerScore.value, gameID)
-
-const addScores = (name, score, id) => {
+const addScores = (name, score) => {
+  let id = 'cji9jX3Fu759G2dMkPZ4'
   fetch(`https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/${id}/scores`, {
     mode: 'cors',
     method: 'post',
@@ -36,54 +31,25 @@ const addScores = (name, score, id) => {
     }
   }).then(function(response) {
     response.json().then((data) => {
-      // console.log(data)
+      console.log(data)
     })
   }).catch(function(err) {
-    console.log(err)
-    console.log('missing input')
+    // console.log(err)
   });
 }
 
-// getScores(gameID)
+const getScores = async () => {
+  let id = 'cji9jX3Fu759G2dMkPZ4'
+  try {
+    const allScores = await fetch(`https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/${id}/scores`, {
+      mode: 'cors',
+    });
 
-const getScores = (game) => {
-  let id = '1xojDPeOGAtIYjyuDmuv'
-  fetch(`https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/${id}/scores`, {
-    mode: 'cors',
-  }).then(function(response) {
-    response.json().then((data) => {
-      console.log(data)
-
-      data.result.sort((a, b) => {
-        return b.score - a.score;
-      }).slice(0, 10).forEach((player, ind) => {
-        game.leaderScreen = game.add.zone(800 / 2, 100 + (ind * 100));
-        //
-        game.previousScoreText = game.add.text(0, 0, `${player.user}: ${player.score}`, {
-          fontSize: '32px',
-          fill: '#fff'
-        });
-
-        Phaser.Display.Align.In.Center(game.previousScoreText, game.leaderScreen);
-
-        game.previousScoreTween = game.tweens.add({
-          targets: game.previousScoreText,
-          y: -1000 + (ind * 100),
-          ease: 'Power1',
-          duration: 7500,
-          delay: 1500,
-          onComplete: function() {
-            game.previousScoreTween.destroy;
-            game.scene.start('Credits');
-          }.bind(game)
-        });
-
-      });
-
-    })
-  }).catch(function(err) {
-    console.log(err)
-  });
+    const scoresJson = await allScores.json();
+    return scoresJson;
+  } catch (err) {
+    // console.log(err);
+  }
 }
 
 export {

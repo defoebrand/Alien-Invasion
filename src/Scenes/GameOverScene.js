@@ -4,12 +4,16 @@ import {
 import {
   kill
 } from '../Helpers/gameLogic'
+import {
+  addScores
+} from '/src/Conf/leaderAPI.js'
 
 export default class GameOverScene extends Phaser.Scene {
   constructor() {
     super('GameOver');
   }
-  preload() {
+
+  create() {
     this.model = this.sys.game.globals.model;
 
     this.add.image(400, 300, 'logo');
@@ -22,8 +26,8 @@ export default class GameOverScene extends Phaser.Scene {
 
     this.finalScoreText = new GameText(this, 0, 500, `${localStorage['name']}: ${this.model.score} pts`, this.zone, '26px', '#fff')
 
+    this.gameOverText.setY(150);
     this.finalScoreText.setY(515);
-    this.gameOverText.setY(150)
 
     this.gameOverTween = this.tweens.add({
       targets: this.gameOverText,
@@ -31,10 +35,9 @@ export default class GameOverScene extends Phaser.Scene {
       ease: 'Power1',
       duration: 2500,
       delay: 500,
-      onComplete: function() {
-        addScores(localStorage['name'], localStorage['previousScore'], gameID)
-        // localStorage.setItem('previousScore', '')
-        // this.destroy;
+      onComplete: function(tween, targets) {
+        addScores(localStorage['name'], targets[0].scene.model.score)
+        this.destroy;
       }
     });
 
@@ -47,7 +50,6 @@ export default class GameOverScene extends Phaser.Scene {
       onComplete: function() {
         this.finalScoreTween.destroy;
         this.scene.start('LeaderBoard');
-        console.log('in final score tween')
       }.bind(this)
     });
   }
