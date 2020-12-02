@@ -17,7 +17,6 @@ const body = document.querySelector('body')
 const playerForm = document.createElement('form');
 playerForm.classList.add('playerForm');
 
-
 const nameInput = document.createElement('input')
 nameInput.type = 'text'
 nameInput.placeholder = 'Please Enter Your Name to Save Your Score...';

@@ -1,6 +1,5 @@
 import {
   getScores,
-  // createGame
 } from '../Conf/leaderAPI'
 import {
   GameText
@@ -11,9 +10,6 @@ export default class LeaderBoardScene extends Phaser.Scene {
   constructor() {
     super('LeaderBoard');
   }
-  // preload() {
-  //   createGame('AVP-Shooter-test')
-  // }
 
   create() {
     this.zone = this.add.zone(800 / 2, 0);
@@ -45,7 +41,6 @@ export default class LeaderBoardScene extends Phaser.Scene {
                 this.destroy;
               }.bind(this)
             });
-
           });
         });
         this.scene.start('Credits');
