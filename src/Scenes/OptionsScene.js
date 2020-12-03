@@ -1,7 +1,6 @@
-import Button from '../Objects/Button'
-import {
-  GameText
-} from '../Objects/GameText'
+import Phaser from 'phaser';
+import Button from '../Objects/Button';
+import GameText from '../Objects/GameText';
 
 export default class OptionsScene extends Phaser.Scene {
   constructor() {
@@ -13,11 +12,11 @@ export default class OptionsScene extends Phaser.Scene {
 
     this.zone = this.add.zone(800 / 2, 600 / 2);
 
-    this.optionsTitle = new GameText(this, 0, -125, 'Options', this.zone, '32px', '#fff')
+    this.optionsTitle = new GameText(this, 0, -125, 'Options', this.zone, '32px', '#fff');
 
     this.musicButton = this.add.image(300, 250, 'boxChecked');
 
-    this.musicText = new GameText(this, 25, -50, 'Music Enabled', this.zone, '24px', '#fff')
+    this.musicText = new GameText(this, 25, -50, 'Music Enabled', this.zone, '24px', '#fff');
 
     this.musicButton.setInteractive();
 
@@ -29,7 +28,6 @@ export default class OptionsScene extends Phaser.Scene {
     this.updateAudio();
 
     this.menuButton = new Button(this, 400, 500, 'buttonEmpty', 'buttonArrow', 'Main Menu', 'Title');
-
   }
 
   updateAudio() {
@@ -44,7 +42,5 @@ export default class OptionsScene extends Phaser.Scene {
         this.model.bgMusicPlaying = true;
       }
     }
-
   }
-
 }

@@ -1,10 +1,8 @@
-import {
-  GameText,
-} from '../Objects/GameText';
+import Phaser from 'phaser';
+import GameText from '../Objects/GameText';
 import {
   addScores,
 } from '../Conf/leaderAPI';
-import Phaser from 'phaser'
 
 export default class GameOverScene extends Phaser.Scene {
   constructor() {
@@ -28,7 +26,7 @@ export default class GameOverScene extends Phaser.Scene {
       delay: 500,
       onComplete: (tween, targets) => {
         addScores(localStorage.name, targets[0].scene.model.score);
-      }
+      },
     });
     this.finalScoreTween = this.tweens.add({
       targets: this.finalScoreText,
@@ -38,7 +36,7 @@ export default class GameOverScene extends Phaser.Scene {
       delay: 1000,
       onComplete: () => {
         this.scene.start('LeaderBoard');
-      }
+      },
     });
   }
 }

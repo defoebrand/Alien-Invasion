@@ -11,7 +11,7 @@ const createGame = async (input) => {
       },
     });
     const createSuccess = await createGameID.json();
-    return createSuccess
+    return createSuccess;
   } catch (err) {
     return err;
   }
@@ -25,14 +25,14 @@ const addScores = async (name, score) => {
       method: 'post',
       body: JSON.stringify({
         user: name,
-        score: score,
+        score,
       }),
       headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      }
+        'Content-type': 'application/json; charset=UTF-8',
+      },
     });
     const submitSuccess = await submitScore.json();
-    return submitSuccess
+    return submitSuccess;
   } catch (err) {
     return err;
   }

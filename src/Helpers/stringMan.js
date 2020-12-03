@@ -4,7 +4,6 @@ export const capFirst = (string) => {
   return string;
 };
 
-
 export const lowerFirst = (string) => {
   string = string.charAt(0).toLowerCase() + string.slice(1);
 

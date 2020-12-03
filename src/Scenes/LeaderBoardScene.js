@@ -1,10 +1,8 @@
+import Phaser from 'phaser';
 import {
   getScores,
 } from '../Conf/leaderAPI';
-import {
-  GameText,
-} from '../Objects/GameText';
-import Phaser from 'phaser'
+import GameText from '../Objects/GameText';
 
 export default class LeaderBoardScene extends Phaser.Scene {
   constructor() {
@@ -22,10 +20,8 @@ export default class LeaderBoardScene extends Phaser.Scene {
       delay: 1000,
       onComplete: () => {
         getScores().then(scores => {
-          scores.result.sort((a, b) => {
-            return b.score - a.score;
-          }).slice(0, 10).forEach((player, ind) => {
-            this.playerScoresText = new GameText(this, 0, 100 + (ind * 100), `${player.user}: ${player.score}`, this.zone, '32px', '#fff')
+          scores.result.sort((a, b) => b.score - a.score).slice(0, 10).forEach((player, ind) => {
+            this.playerScoresText = new GameText(this, 0, 100 + (ind * 100), `${player.user}: ${player.score}`, this.zone, '32px', '#fff');
             this.playerScoresTween = this.tweens.add({
               targets: this.playerScoresText,
               y: -1000 + (ind * 100),

@@ -1,5 +1,5 @@
-import Button from '../Objects/Button';
 import Phaser from 'phaser';
+import Button from '../Objects/Button';
 
 export default class CharacterSelectScene extends Phaser.Scene {
   constructor() {
@@ -13,5 +13,4 @@ export default class CharacterSelectScene extends Phaser.Scene {
     this.soldierSelect = new Button(this, 800 / 2, 600 / 2 - 25, 'buttonEmpty', 'selectSoldier', 'Soldier', 'Game', this.model);
     this.alienSelect = new Button(this, 800 / 2, 600 / 2 + 50, 'buttonEmpty', 'selectAlien', 'Alien', 'Game', this.model);
   }
-
 }

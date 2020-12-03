@@ -1,7 +1,5 @@
-import {
-  GameText,
-} from '../Objects/GameText'
 import Phaser from 'phaser';
+import GameText from '../Objects/GameText';
 
 export default class CreditsScene extends Phaser.Scene {
   constructor() {
@@ -37,7 +35,7 @@ export default class CreditsScene extends Phaser.Scene {
       delay: 2500,
       onComplete: () => {
         this.scene.start('Title');
-      }
+      },
     });
   }
 }
