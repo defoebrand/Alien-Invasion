@@ -18,8 +18,8 @@ export default class LeaderBoardScene extends Phaser.Scene {
       targets: this.highScoreText,
       y: -100,
       ease: 'Power1',
-      duration: 2500,
-      delay: 1500,
+      duration: 2000,
+      delay: 1000,
       onComplete: () => {
         getScores().then(scores => {
           scores.result.sort((a, b) => {
@@ -38,7 +38,7 @@ export default class LeaderBoardScene extends Phaser.Scene {
             });
           });
         });
-        this.scene.start('Credits');
+        // this.scene.start('Credits');
       },
     });
   }

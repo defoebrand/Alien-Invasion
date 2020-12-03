@@ -1,5 +1,5 @@
-import Artillery from '../Objects/Artillery';
 import Phaser from 'phaser';
+import Artillery from '../Objects/Artillery';
 
 export const gameReset = (scene) => {
   scene.scene.start('GameOver');
@@ -15,7 +15,7 @@ export const kill = (objectOne, objectTwo) => {
 };
 
 export const explode = (bullet) => {
-  const thisScene = window.game.scene.scenes[7];
+  const thisScene = window.game.scene.keys.Game
   thisScene.explosion = thisScene.add.sprite(bullet.x, bullet.y, `${thisScene.model.charSelect}Bullet`);
   thisScene.explosion.anims.play(`${thisScene.model.charSelect}BulletExplosion`);
   thisScene.time.delayedCall(5, kill, [bullet], this);
@@ -23,14 +23,14 @@ export const explode = (bullet) => {
 };
 
 export const killPlayer = (bullet, object) => {
-  const thisScene = window.game.scene.scenes[7];
+  const thisScene = window.game.scene.keys.Game
   thisScene.playerDead = true;
   thisScene.time.delayedCall(25, explode, [object], this);
   thisScene.time.delayedCall(2500, gameReset, [thisScene], this);
 };
 
 export const chasePlayer = (enemy) => {
-  const thisScene = window.game.scene.scenes[7];
+  const thisScene = window.game.scene.keys.Game
 
   if (enemy.x >= thisScene.player.x) {
     enemy.body.setVelocityX(-150);

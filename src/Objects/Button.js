@@ -1,6 +1,6 @@
 import {
   lowerFirst,
-} from '/src/Helpers/stringMan';
+} from '../Helpers/stringMan';
 
 export default class Button extends Phaser.GameObjects.Container {
   constructor(scene, x, y, key1, key2, text, targetScene, character) {

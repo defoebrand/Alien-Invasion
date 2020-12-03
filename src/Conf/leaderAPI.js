@@ -10,8 +10,8 @@ const createGame = async (input) => {
         'Content-type': 'application/json; charset=UTF-8',
       },
     });
-
     const createSuccess = await createGameID.json();
+    return createSuccess
   } catch (err) {
     return err;
   }
@@ -20,7 +20,7 @@ const createGame = async (input) => {
 const addScores = async (name, score) => {
   const id = 'cji9jX3Fu759G2dMkPZ4';
   try {
-    const addScore = fetch(`https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/${id}/scores`, {
+    const submitScore = await fetch(`https://us-central1-js-capstone-backend.cloudfunctions.net/api/games/${id}/scores`, {
       mode: 'cors',
       method: 'post',
       body: JSON.stringify({
@@ -28,12 +28,11 @@ const addScores = async (name, score) => {
         score: score,
       }),
       headers: {
-        'Content-type': 'application/json; charset=UTF-8',
-      },
+        "Content-type": "application/json; charset=UTF-8"
+      }
     });
-
-    const scoreSuccess = await addScore.json();
-    return scoreSuccess
+    const submitSuccess = await submitScore.json();
+    return submitSuccess
   } catch (err) {
     return err;
   }
