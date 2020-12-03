@@ -1,7 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
-
 
 module.exports = {
   entry: './src/index.js',
@@ -12,16 +10,16 @@ module.exports = {
   plugins: [new HtmlWebpackPlugin()],
   module: {
     rules: [{
-        test: /\.s?[ac]ss$/i,
-        use: ["style-loader", "css-loader", "sass-loader", ],
-      },
-      {
-        test: /\.(gif|png|jpe?g|svg|xml|m4a)$/i,
-        use: "file-loader"
-      }
+      test: /\.s?[ac]ss$/i,
+      use: ['style-loader', 'css-loader', 'sass-loader'],
+    },
+    {
+      test: /\.(gif|png|jpe?g|svg|xml|m4a)$/i,
+      use: 'file-loader'
+    },
     ],
   },
   performance: {
-    hints: false
-  }
+    hints: false,
+  },
 };

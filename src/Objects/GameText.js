@@ -1,3 +1,5 @@
+import Phaser from 'phaser';
+
 export class GameText extends Phaser.GameObjects.Container {
   constructor(scene, x, y, text, zone, size, color) {
     super(scene);
@@ -7,7 +9,7 @@ export class GameText extends Phaser.GameObjects.Container {
 
     this.text = this.scene.add.text(x, y, text, {
       fontSize: size,
-      fill: color
+      fill: color,
     });
 
 
@@ -28,19 +30,19 @@ export class TextBorder extends Phaser.GameObjects.Container {
 
     this.borderTL = this.scene.add.text(x - 1, y - 1, text, {
       fontSize: size,
-      fill: color
+      fill: color,
     });
     this.borderTR = this.scene.add.text(x + 1, y - 1, text, {
       fontSize: size,
-      fill: color
+      fill: color,
     });
     this.borderBL = this.scene.add.text(x - 1, y + 1, text, {
       fontSize: size,
-      fill: color
+      fill: color,
     });
     this.borderBR = this.scene.add.text(x + 1, y + 1, text, {
       fontSize: size,
-      fill: color
+      fill: color,
     });
 
     Phaser.Display.Align.In.Center(this.borderTL, zone);

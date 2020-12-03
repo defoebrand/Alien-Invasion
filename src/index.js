@@ -1,7 +1,7 @@
 import './style.scss';
-import 'phaser';
+import Phaser from 'phaser';
 import config from './Conf/config';
-import Model from './Conf/Model'
+import Model from './Conf/Model';
 import BootScene from './Scenes/BootScene';
 import PreloaderScene from './Scenes/PreloaderScene';
 import TitleScene from './Scenes/TitleScene';
@@ -12,31 +12,33 @@ import GamePlayScene from './Scenes/GamePlayScene';
 import GameOverScene from './Scenes/GameOverScene';
 import LeaderBoardScene from './Scenes/LeaderBoardScene';
 
-const body = document.querySelector('body')
+document.title = 'Alien-Invasion';
+
+const body = document.querySelector('body');
 
 const playerForm = document.createElement('form');
 playerForm.classList.add('playerForm');
 
-const nameInput = document.createElement('input')
-nameInput.type = 'text'
+const nameInput = document.createElement('input');
+nameInput.type = 'text';
 nameInput.placeholder = 'Please Enter Your Name to Save Your Score...';
 
-playerForm.appendChild(nameInput)
+playerForm.appendChild(nameInput);
 
-const submitBtn = document.createElement('input')
-submitBtn.type = 'submit'
-submitBtn.value = "Save Name"
+const submitBtn = document.createElement('input');
+submitBtn.type = 'submit';
+submitBtn.value = 'Save Name';
 submitBtn.classList.add('submitBtn');
 submitBtn.onclick = (e) => {
-  e.preventDefault()
-  localStorage.setItem('name', nameInput.value)
-  body.removeChild(playerForm)
-  body.removeChild(submitBtn)
-}
-playerForm.appendChild(submitBtn)
+  e.preventDefault();
+  localStorage.setItem('name', nameInput.value);
+  body.removeChild(playerForm);
+  body.removeChild(submitBtn);
+};
+playerForm.appendChild(submitBtn);
 
-if (!localStorage['name']) {
-  body.appendChild(playerForm)
+if (!localStorage.name) {
+  body.appendChild(playerForm);
 }
 
 class Game extends Phaser.Game {
@@ -45,7 +47,7 @@ class Game extends Phaser.Game {
     window.model = new Model();
     this.globals = {
       model,
-      bgMusic: null
+      bgMusic: null,
     };
     this.scene.add('Boot', BootScene);
     this.scene.add('Preloader', PreloaderScene);

@@ -1,3 +1,5 @@
+import Phaser from 'phaser'
+
 export default class Character extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, key) {
     super(scene, x, y, key);
