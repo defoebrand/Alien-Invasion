@@ -2,7 +2,7 @@
 
 > This project is the Microverse JavaScript Capstone project. It was created using Phaser 3 to be in the style of a Shooter game. It is compiled using webpack and deployed with Netlify. It takes keyboard input, uses multiple scenes, and connects to a LeaderBoard API.
 
-![screenshot](public/screenshot.png)
+![screenshot](src/Assets/screenshot.png)
 
 ### Features
 
@@ -73,6 +73,8 @@ The year is 2021. The New Year's celebrations just finished dying down when huge
 -   Jest
 
 ## Live Demo
+
+Play ![here](https://quirky-nobel-917e25.netlify.app/) now!
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/431eebb7-7616-4051-b029-431a6c88459a/deploy-status)](https://app.netlify.com/sites/quirky-nobel-917e25/deploys)
 
