@@ -26,7 +26,7 @@
 
 # Description
 
-The year is 2021. The New Year's celebrations just finished dying down when huge explosions seem to be heard simultaneously around the world. Before you have time to look up you see the bright beams of light shining all over the place and people, dumbfounded, stare up into them like a deer on a dark road. Good thing you have your trusty 'Rusty' shotgun with you. You hear an explosion and see an alien gets shot and throw a grenade before blowing up! Soldiers in hardened full-body suits start showing up out of nowhere and you know it's time! It's 2020 part 2: 2021! Alien Invasion!
+The year is 2021. The New Year's celebrations just finished dying down when huge explosions seem to be heard simultaneously around the world. Before you even have time to look up you see bright beams of light shining all over the ground and people, dumbfounded, stare up into them like deer on a dark road. Good thing you have your trusty 'Rusty' shotgun with you. You hear an explosion and see an alien get shot, throwing a grenade before blowing himself up! Soldiers in hardened full-body suits start showing up out of nowhere and you know it's time! It's 2020 part 2: 2021! Alien Invasion!
 
 ## Gameplay
 
@@ -39,9 +39,13 @@ The year is 2021. The New Year's celebrations just finished dying down when huge
 -   Avoid touching bombs
 -   Aliens can be destroyed by shooting them
 -   Bombs can be destroyed by shooting them
--   A timer counts down each round. You have 5 seconds to kill the first alien and 15 seconds for each alien afterwards.
--   Every other round, the platforms over head rearrange.
--   10 points are given for every alien destroyed
+-   A timer counts down each round
+-   You have 5 seconds to kill the first alien and 10 seconds for each round afterwards
+-   Every round, between 1 - 3 aliens will appear
+-   Every third round, the platforms over head rearrange
+-   Every other round a bomb drops
+-   10 points are given for every round cleared
+-   A round is cleared when all aliens are destroyed
 -   Luck is just as important as skill in this game!
     #### Enter your name above the game to save your scores. The input will disappear if a name is stored.
 -   to reset your username, clear the localStorage or use a new browser

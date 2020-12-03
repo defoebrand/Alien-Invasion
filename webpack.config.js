@@ -22,4 +22,7 @@ module.exports = {
   performance: {
     hints: false,
   },
+  watchOptions: {
+    ignored: /node_modules/,
+  },
 };

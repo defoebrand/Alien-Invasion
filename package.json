@@ -2,41 +2,37 @@
   "name": "Invasion",
   "version": "1.0.0",
   "description": "Alien Invasion shooter game.",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "webpack",
     "watch": "webpack --watch",
     "server": "webpack-dev-server --config webpack.config.js",
-    "lint": "eslint .",
-    "lint-fix": "eslint . --fix"
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "css-loader": "^5.0.1",
+    "@babel/preset-env": "^7.12.7",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.6.3",
+    "eslint": "^7.14.0",
     "eslint-plugin-import": "^2.22.1",
-    "html-webpack-plugin": "^4.5.0",
-    "sass": "^1.29.0",
-    "sass-loader": "^10.1.0",
-    "style-loader": "^2.0.0",
-    "webpack": "^5.5.1",
+    "eslint-config-airbnb-base": "^14.2.1",
     "webpack-cli": "^ 3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "jest": "^26.6.3",
+    "jest-cli": "^26.6.3"
   },
   "dependencies": {
-    "babel-eslint": "^10.1.0",
-    "css-loader": "^5.0.1",
-    "eslint": "^7.14.0",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "webpack": "^5.5.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^4.5.0",
-    "phaser": "^3.24.1",
     "sass": "^1.29.0",
+    "css-loader": "^5.0.1",
     "sass-loader": "^10.1.0",
     "style-loader": "^2.0.0",
-    "webpack": "^5.5.1",
-    "webpack-cli": "^ 3.3.12"
+    "phaser": "^3.24.1"
   }
 }
