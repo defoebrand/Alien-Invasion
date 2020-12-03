@@ -9,10 +9,11 @@
 -   Loading screen progress bar with background art
 -   Arrow pointer for easy menu selection
 -   Character selection
--   Dynamic level creation every other round
+-   Dynamic level creation every third round
 -   Round timer
--   Points awarded for each enemy destroyed
+-   Points awarded for each round cleared
 -   Enemies chase player based on x position
+-   Enemies jump if the player jumps
 -   Options for music/sound to be set on/off
 -   LeaderBoard quickplay
 -   LeaderBoard connected to LeaderBoard API
@@ -56,7 +57,7 @@ The year is 2021. The New Year's celebrations just finished dying down when huge
 -   Preloader
 -   Title
 -   Character Selection
--   Game
+-   GamePlay
 -   GameOver
 -   LeaderBoard
 -   Credits
@@ -69,6 +70,7 @@ The year is 2021. The New Year's celebrations just finished dying down when huge
 -   HTML / SCSS / JavaScript / node.js
 -   WebPack
 -   Phaser3
+-   Jest
 
 ## Live Demo
 
