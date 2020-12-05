@@ -1,8 +1,19 @@
 import Phaser from 'phaser';
 import Artillery from '../Objects/Artillery';
+import GameText from '../Objects/GameText';
+import TextBorder from '../Objects/TextBorder';
+import Button from '../Objects/Button';
 
 export const gameReset = (scene) => {
-  scene.scene.start('GameOver');
+  scene.zone = scene.add.zone(800 / 2, 0);
+
+  scene.gameOverText = new TextBorder(scene, 0, (600 / 2) - 50, 'Would you like to play again?', scene.zone, '15px', '#d90922');
+
+  scene.gameOverText = new GameText(scene, 0, (600 / 2) - 50, 'Would you like to play again?', scene.zone, '15px', 'black');
+
+  scene.yesButton = new Button(scene, 250, 600 / 2 + 200, 'buttonEmpty', 'buttonArrow', 'Yes', 'CharacterSelect');
+
+  scene.noButton = new Button(scene, 550, 600 / 2 + 200, 'buttonEmpty', 'buttonArrow', 'No', 'GameOver');
 };
 
 export const kill = (objectOne, objectTwo) => {
