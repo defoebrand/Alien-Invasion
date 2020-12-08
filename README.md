@@ -80,17 +80,14 @@ Play the game [here](https://quirky-nobel-917e25.netlify.app/)!
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/431eebb7-7616-4051-b029-431a6c88459a/deploy-status)](https://app.netlify.com/sites/quirky-nobel-917e25/deploys)
 
-## Getting Started
 
-To get a local copy up and running follow these simple example steps.
+
+## Getting Started
+**To get this project set up on your local machine, follow these simple steps:**
 
 #### Prerequisites
-
-To get this project up and running locally, you must have node and npm installed on your computer.
-
-## Getting Started
-
-**To get this project set up on your local machine, follow these simple steps:**
+ - Node.js4
+ - NPM
 
 **Step 1**<br>
 Navigate to the local folder where you want the repository to be cloned and run
@@ -107,6 +104,10 @@ Run `npm run server` to begin the server.<br>
 
 **Step 5**<br>
 Navigate to `http://localhost:8080/` in a browser of your choice to see the application running<br>
+
+### Testing
+This project uses Jest for testing.
+> To run tests open a terminal inside the project's root directory and enter `npm run tests`
 
 ## Authors
 

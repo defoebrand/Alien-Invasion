@@ -1,3 +1,8 @@
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+
+const fetch = require('node-fetch');
+
 const createGame = async (input) => {
   try {
     const createGameID = await fetch('https://us-central1-js-capstone-backend.cloudfunctions.net/api/games', {
