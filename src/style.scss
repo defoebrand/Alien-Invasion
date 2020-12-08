@@ -1,6 +1,32 @@
 body {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  position: relative;
+}
+
+input {
+  width: 300px;
+  padding: 5px;
+  z-index: 99;
+  margin-bottom: 25px;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.playerForm {
+  @extend body;
+
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 10px;
+}
+
+.submitBtn {
+  width: 150px;
 }
