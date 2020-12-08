@@ -74,6 +74,8 @@ The year is 2021. The New Year's celebrations just finished dying down when huge
 
 ## Live Demo
 
+Play the game [here](https://quirky-nobel-917e25.netlify.app/)!
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/431eebb7-7616-4051-b029-431a6c88459a/deploy-status)](https://app.netlify.com/sites/quirky-nobel-917e25/deploys)
 
 ## Getting Started
