@@ -24,8 +24,8 @@ export default class GameOverScene extends Phaser.Scene {
       ease: 'Power1',
       duration: 2500,
       delay: 500,
-      onComplete: (tween, targets) => {
-        addScores(localStorage.name, targets[0].scene.model.score);
+      onComplete: () => {
+        addScores(localStorage.name, model.score);
       },
     });
     this.finalScoreTween = this.tweens.add({
