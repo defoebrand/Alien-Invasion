@@ -26,50 +26,50 @@ export const kill = (objectOne, objectTwo) => {
 };
 
 export const explode = (bullet) => {
-  const thisScene = window.game.scene.keys.Game;
-  thisScene.explosion = thisScene.add.sprite(bullet.x, bullet.y, `${thisScene.model.charSelect}Bullet`);
-  thisScene.explosion.anims.play(`${thisScene.model.charSelect}BulletExplosion`);
-  thisScene.time.delayedCall(5, kill, [bullet], this);
-  thisScene.time.delayedCall(250, kill, [thisScene.explosion], this);
+  const { Game } = window.game.scene.keys;
+  Game.explosion = Game.add.sprite(bullet.x, bullet.y, `${Game.model.charSelect}Bullet`);
+  Game.explosion.anims.play(`${Game.model.charSelect}BulletExplosion`);
+  Game.time.delayedCall(5, kill, [bullet], this);
+  Game.time.delayedCall(250, kill, [Game.explosion], this);
 };
 
 export const killPlayer = (bullet, object) => {
-  const thisScene = window.game.scene.keys.Game;
-  thisScene.playerDead = true;
-  thisScene.time.delayedCall(25, explode, [object], this);
-  thisScene.time.delayedCall(2500, gameReset, [thisScene], this);
+  const { Game } = window.game.scene.keys;
+  Game.playerDead = true;
+  Game.time.delayedCall(25, explode, [object], this);
+  Game.time.delayedCall(2500, gameReset, [Game], this);
 };
 
 export const chasePlayer = (enemy) => {
-  const thisScene = window.game.scene.keys.Game;
+  const { Game } = window.game.scene.keys;
 
-  if (enemy.x >= thisScene.player.x) {
+  if (enemy.x >= Game.player.x) {
     enemy.body.setVelocityX(-150);
-    enemy.anims.play(`${thisScene.enemySelect}ShootLeft`);
+    enemy.anims.play(`${Game.enemySelect}ShootLeft`);
     enemy.direction = 'left';
   } else {
     enemy.body.setVelocityX(150);
-    enemy.anims.play(`${thisScene.enemySelect}Shoot`);
+    enemy.anims.play(`${Game.enemySelect}Shoot`);
     enemy.direction = 'right';
   }
 
-  if ((enemy.y - thisScene.player.y) > 35) {
+  if ((enemy.y - Game.player.y) > 35) {
     enemy.body.setVelocityY(-330);
   }
-  if (Phaser.Math.Difference(enemy.x, thisScene.player.x) < 50) {
-    enemy.body.x = thisScene.player.x + Phaser.Math.Between(-200, 200);
+  if (Phaser.Math.Difference(enemy.x, Game.player.x) < 50) {
+    enemy.body.x = Game.player.x + Phaser.Math.Between(-200, 200);
   }
 
-  if (thisScene.shootTimer % 75 === 0) {
-    thisScene.enemyBullet = new Artillery(thisScene, enemy.x,
-      enemy.y - thisScene.enemyGunHeight, `${thisScene.enemySelect}Bullet`);
-    thisScene.physics.add.collider(thisScene.enemyBullet, thisScene.player,
-      killPlayer, null, thisScene);
+  if (Game.shootTimer % 75 === 0) {
+    Game.enemyBullet = new Artillery(Game, enemy.x,
+      enemy.y - Game.enemyGunHeight, `${Game.enemySelect}Bullet`);
+    Game.physics.add.collider(Game.enemyBullet, Game.player,
+      killPlayer, null, Game);
     if (enemy.direction === 'left') {
-      thisScene.enemyBullet.body.setVelocity(-300, 0);
+      Game.enemyBullet.body.setVelocity(-300, 0);
     } else {
-      thisScene.enemyBullet.body.setVelocity(300, 0);
+      Game.enemyBullet.body.setVelocity(300, 0);
     }
-    thisScene.time.delayedCall(2250, kill, [thisScene.enemyBullet, ''], thisScene);
+    Game.time.delayedCall(2250, kill, [Game.enemyBullet, ''], Game);
   }
 };

@@ -107,6 +107,10 @@ Navigate to `http://localhost:8080/` in a browser of your choice to see the appl
 
 ### Testing
 This project uses Jest for testing.
+ - Additional packages required for API tests  
+   -- core-js  
+   -- regenerator-runtime  
+   -- node-fetch
 > To run tests open a terminal inside the project's root directory and enter `npm run tests`
 
 ## Authors

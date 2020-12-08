@@ -10,12 +10,12 @@ export default class GameOverScene extends Phaser.Scene {
   }
 
   create() {
-    this.model = this.sys.game.globals.model;
+    const { model } = this.sys.game.globals;
     this.add.image(400, 300, 'logo');
     this.zone = this.add.zone(800 / 2, 0);
     this.gameOverText = new GameText(this, 0, 50, 'Game Over', this.zone, '50px', '#d90922');
     this.thanksText = new GameText(this, 0, 560, 'Thanks for Playing!', this.zone, '26px', '#fff');
-    this.finalScoreText = new GameText(this, 0, 500, `${localStorage.name}: ${this.model.score} pts`, this.zone, '26px', '#fff');
+    this.finalScoreText = new GameText(this, 0, 500, `${localStorage.name}: ${model.score} pts`, this.zone, '26px', '#fff');
     this.gameOverText.setY(150);
     this.finalScoreText.setY(515);
     this.gameOverTween = this.tweens.add({

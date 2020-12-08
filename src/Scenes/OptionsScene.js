@@ -8,7 +8,7 @@ export default class OptionsScene extends Phaser.Scene {
   }
 
   create() {
-    this.model = this.sys.game.globals.model;
+    const { model } = this.sys.game.globals;
 
     this.zone = this.add.zone(800 / 2, 600 / 2);
 
@@ -21,25 +21,25 @@ export default class OptionsScene extends Phaser.Scene {
     this.musicButton.setInteractive();
 
     this.musicButton.on('pointerdown', () => {
-      this.model.musicOn = !this.model.musicOn;
-      this.updateAudio();
+      model.musicOn = !model.musicOn;
+      this.updateAudio(model);
     });
 
-    this.updateAudio();
+    this.updateAudio(model);
 
     this.menuButton = new Button(this, 400, 500, 'buttonEmpty', 'buttonArrow', 'Main Menu', 'Title');
   }
 
-  updateAudio() {
-    if (this.model.musicOn === false) {
+  updateAudio(model) {
+    if (model.musicOn === false) {
       this.musicButton.setTexture('boxUnchecked');
       this.sys.game.globals.bgMusic.stop();
-      this.model.bgMusicPlaying = false;
+      model.bgMusicPlaying = false;
     } else {
       this.musicButton.setTexture('boxChecked');
-      if (this.model.bgMusicPlaying === false) {
+      if (model.bgMusicPlaying === false) {
         this.sys.game.globals.bgMusic.play();
-        this.model.bgMusicPlaying = true;
+        model.bgMusicPlaying = true;
       }
     }
   }
