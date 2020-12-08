@@ -19,14 +19,5 @@
   "ignorePatterns": [
     "dist/",
     "build/"
-  ],
-  "overrides": [
-    {
-      "files": ["**/*.js"],
-      "rules": {
-        "no-underscore-dangle": ["off"],
-        "no-undef": ["off"]
-      }
-    }
   ]
 }

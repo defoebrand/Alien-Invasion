@@ -44,9 +44,9 @@ if (!localStorage.name) {
 class Game extends Phaser.Game {
   constructor() {
     super(config);
-    window.model = new Model();
+    // window.model = new Model();
     this.globals = {
-      model,
+      model: new Model(),
       bgMusic: null,
     };
     this.scene.add('Boot', BootScene);
