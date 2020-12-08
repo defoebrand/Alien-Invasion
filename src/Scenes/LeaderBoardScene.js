@@ -3,6 +3,7 @@ import {
   getScores,
 } from '../Conf/leaderAPI';
 import GameText from '../Objects/GameText';
+import Button from '../Objects/Button';
 
 export default class LeaderBoardScene extends Phaser.Scene {
   constructor() {
@@ -11,6 +12,8 @@ export default class LeaderBoardScene extends Phaser.Scene {
 
   create() {
     this.zone = this.add.zone(800 / 2, 0);
+    this.skipButton = new Button(this, 750, 25, 'buttonEmpty', 'buttonEmpty', 'Skip', 'Credits');
+
     this.highScoreText = new GameText(this, 0, 25, 'Top Ten Scores', this.zone, '26px', '#fff');
     this.highScoreTween = this.tweens.add({
       targets: this.highScoreText,
@@ -33,8 +36,9 @@ export default class LeaderBoardScene extends Phaser.Scene {
               },
             });
           });
+        }).catch(() => {
+          this.scene.start('Credits');
         });
-        // this.scene.start('Credits');
       },
     });
   }

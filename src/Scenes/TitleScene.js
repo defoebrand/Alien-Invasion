@@ -6,6 +6,18 @@ export default class TitleScene extends Phaser.Scene {
     super('Title');
   }
 
+  preload() {
+    const FKey = this.input.keyboard.addKey('F');
+
+    FKey.on('down', () => {
+      if (this.scale.isFullscreen) {
+        this.scale.stopFullscreen();
+      } else {
+        this.scale.startFullscreen();
+      }
+    }, this);
+  }
+
   create() {
     const { model } = this.sys.game.globals;
 

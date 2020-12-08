@@ -18,6 +18,7 @@
 -   LeaderBoard quickplay
 -   LeaderBoard connected to LeaderBoard API
 -   Credits quickplay
+-   Skip buttons for LeaderBoard and Credits scenes
 
 ###### Coming Features
 
@@ -35,6 +36,7 @@ The year is 2021. The New Year's celebrations just finished dying down when huge
  `<` - Press 'Left' on the directional pad to move left.  
  `>` - Press 'Right' on the directional pad to move right.  
  `SPACE` - Press 'Space' on the directional pad to shoot.   
+ `F` - Press the 'F' button on the Title screen or during GamePlay to enter/exit FullScreen mode.  
 
  ### Mechanics
 -   Avoid being shot by enemies

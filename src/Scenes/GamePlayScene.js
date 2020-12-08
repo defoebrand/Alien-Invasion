@@ -15,6 +15,16 @@ export default class GamePlayScene extends Phaser.Scene {
   }
 
   preload() {
+    const FKey = this.input.keyboard.addKey('F');
+
+    FKey.on('down', () => {
+      if (this.scale.isFullscreen) {
+        this.scale.stopFullscreen();
+      } else {
+        this.scale.startFullscreen();
+      }
+    }, this);
+
     this.model = this.sys.game.globals.model;
 
     if (this.model.charSelect === 'soldier') {
